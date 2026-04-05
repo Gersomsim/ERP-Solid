@@ -1,11 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core'
+import { RouterLink } from '@angular/router'
+
+import { Button } from '@ui/atoms/button/button'
+import { Icon } from '@ui/atoms/icon/icon'
+import { Input } from '@ui/atoms/input/input'
 
 @Component({
-  selector: 'app-forgot-password-page',
-  imports: [],
-  templateUrl: './forgot-password-page.html',
-  styleUrl: './forgot-password-page.css',
+    selector: 'app-forgot-password-page',
+    imports: [RouterLink, Button, Icon, Input],
+    templateUrl: './forgot-password-page.html',
 })
 export class ForgotPasswordPage {
+    protected submitted = signal(false)
 
+    protected submit(): void {
+        this.submitted.set(true)
+    }
+
+    protected resend(): void {
+        this.submitted.set(false)
+    }
 }
