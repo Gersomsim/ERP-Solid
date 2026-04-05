@@ -1,25 +1,34 @@
 import { Route } from '@angular/router'
 
+import { AuthTemplate } from '@ui/templates'
+
 export const authRoutes: Route[] = [
 	{
-		path: 'login',
-		loadComponent: () => import('./login-page/login-page').then(m => m.LoginPage),
-	},
-	{
-		path: 'register',
-		loadComponent: () => import('./register-page/register-page').then(m => m.RegisterPage),
-	},
-	{
-		path: 'forgot-password',
-		loadComponent: () => import('./forgot-password-page/forgot-password-page').then(m => m.ForgotPasswordPage),
-	},
-	{
-		path: 'reset-password',
-		loadComponent: () => import('./reset-password-page/reset-password-page').then(m => m.ResetPasswordPage),
-	},
-	{
 		path: '',
-		redirectTo: 'login',
-		pathMatch: 'full',
+		component: AuthTemplate,
+		children: [
+			{
+				path: 'login',
+				loadComponent: () => import('./login-page/login-page').then(m => m.LoginPage),
+			},
+			{
+				path: 'register',
+				loadComponent: () => import('./register-page/register-page').then(m => m.RegisterPage),
+			},
+			{
+				path: 'forgot-password',
+				loadComponent: () =>
+					import('./forgot-password-page/forgot-password-page').then(m => m.ForgotPasswordPage),
+			},
+			{
+				path: 'reset-password',
+				loadComponent: () => import('./reset-password-page/reset-password-page').then(m => m.ResetPasswordPage),
+			},
+			{
+				path: '',
+				redirectTo: 'login',
+				pathMatch: 'full',
+			},
+		],
 	},
 ]

@@ -1,0 +1,79 @@
+<div class="flex flex-col gap-1.5 w-full">
+
+    <!-- Label -->
+    @if (label()) {
+        <label
+            [for]="uid"
+            class="text-sm font-medium text-surface-700 dark:text-surface-300"
+        >
+            {{ label() }}
+        </label>
+    }
+
+    <!-- Input wrapper -->
+    <div class="relative flex items-center">
+
+        <!-- Prefix icon -->
+        @if (prefixIcon()) {
+            <div class="absolute left-3 flex items-center pointer-events-none
+                        text-surface-400 dark:text-surface-500">
+                <lib-ui-icon [icon]="prefixIcon()!" [size]="16" />
+            </div>
+        }
+
+        <!-- Input -->
+        <input
+            [id]="uid"
+            [type]="resolvedType()"
+            [placeholder]="placeholder()"
+            [disabled]="isDisabled()"
+            [value]="value()"
+            (input)="onInput($event)"
+            (blur)="onBlur()"
+            [class]="[
+                'w-full h-11 rounded-lg border bg-white text-surface-800 text-sm',
+                'placeholder:text-surface-400',
+                'transition-colors duration-150 outline-none',
+                'focus:ring-2',
+                'disabled:opacity-50 disabled:cursor-not-allowed',
+                'dark:bg-surface-800 dark:text-surface-100 dark:placeholder:text-surface-500',
+                prefixIcon() ? 'pl-10' : 'pl-3.5',
+                type() === 'password' ? 'pr-10' : 'pr-3.5',
+                error()
+                    ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500/20 dark:border-danger-500'
+                    : 'border-surface-200 focus:border-primary-500 focus:ring-primary-500/20 dark:border-surface-700 dark:focus:border-primary-500'
+            ].join(' ')"
+        />
+
+        <!-- Password toggle -->
+        @if (type() === 'password') {
+            <button
+                type="button"
+                (click)="togglePassword()"
+                class="absolute right-3 flex items-center text-surface-400 hover:text-surface-600
+                       dark:text-surface-500 dark:hover:text-surface-300 transition-colors duration-150"
+                [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            >
+                @if (showPassword()) {
+                    <lib-ui-icon icon="eye-off" [size]="16" />
+                } @else {
+                    <lib-ui-icon icon="eye" [size]="16" />
+                }
+            </button>
+        }
+    </div>
+
+    <!-- Error -->
+    @if (error()) {
+        <p class="flex items-center gap-1.5 text-xs text-danger-500">
+            <lib-ui-icon icon="circle-alert" [size]="13" />
+            {{ error() }}
+        </p>
+    }
+
+    <!-- Hint -->
+    @if (hint() && !error()) {
+        <p class="text-xs text-surface-400 dark:text-surface-500">{{ hint() }}</p>
+    }
+
+</div>

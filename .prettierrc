@@ -20,8 +20,9 @@
   "importOrder": [
     "^@angular/(.*)$",
     "<THIRD_PARTY_MODULES>",
-    "^@domain/(.*)$",
-    "^@infra/(.*)$",
+    "^@core/(.*)$",
+    "^@ui/(.*)$",
+    "^@pages/(.*)$",
     "^[./]"
   ],
   "importOrderSeparation": true,

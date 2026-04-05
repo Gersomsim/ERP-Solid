@@ -1,0 +1,106 @@
+<div class="min-h-screen flex bg-surface-50 dark:bg-surface-950 transition-colors duration-200">
+
+    <!-- ── Panel izquierdo · Branding ──────────────────────────── -->
+    <aside
+        class="hidden lg:flex lg:w-[420px] xl:w-[480px] flex-col relative overflow-hidden
+               bg-primary-800 dark:bg-primary-950 flex-shrink-0"
+    >
+        <!-- Dot grid pattern -->
+        <div
+            class="absolute inset-0 opacity-[0.07]"
+            style="background-image: radial-gradient(circle, white 1.5px, transparent 0);
+                   background-size: 28px 28px;"
+        ></div>
+
+        <!-- Decorative blobs -->
+        <div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-primary-600 opacity-30 blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-primary-950 opacity-60 blur-2xl pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/4 w-48 h-48 rounded-full bg-primary-500 opacity-10 blur-2xl pointer-events-none"></div>
+
+        <!-- Contenido del panel -->
+        <div class="relative z-10 flex flex-col h-full p-10 xl:p-14">
+
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center backdrop-blur-sm">
+                    <lib-ui-icon icon="building" [size]="17" class="text-white" />
+                </div>
+                <span class="text-white font-semibold text-lg tracking-tight">ERP Solid</span>
+            </div>
+
+            <!-- Headline central -->
+            <div class="flex-1 flex flex-col justify-center">
+                <p class="text-primary-300 text-sm font-medium tracking-widest uppercase mb-5">
+                    Plataforma empresarial
+                </p>
+                <h1 class="text-white text-4xl xl:text-[42px] font-bold leading-[1.15] mb-6">
+                    Gestión sin<br />
+                    <span class="text-primary-300">límites.</span>
+                </h1>
+                <p class="text-primary-200/80 text-base leading-relaxed max-w-xs">
+                    Multitenant, escalable y diseñado para adaptarse a la identidad de cada empresa.
+                </p>
+
+                <!-- Features -->
+                <ul class="mt-10 space-y-3.5">
+                    @for (feature of features; track feature.label) {
+                        <li class="flex items-center gap-3.5 group">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-white/10 border border-white/10 flex items-center justify-center
+                                       flex-shrink-0 group-hover:bg-white/15 transition-colors duration-150"
+                            >
+                                <lib-ui-icon [icon]="feature.icon" [size]="15" class="text-primary-200" />
+                            </div>
+                            <span class="text-primary-100/90 text-sm">{{ feature.label }}</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+            <!-- Footer del panel -->
+            <p class="text-primary-500 text-xs">
+                © {{ currentYear }} ERP Solid · Todos los derechos reservados.
+            </p>
+        </div>
+    </aside>
+
+    <!-- ── Panel derecho · Contenido ───────────────────────────── -->
+    <main class="flex-1 flex flex-col min-w-0">
+
+        <!-- Barra superior -->
+        <header class="flex items-center justify-between px-6 pt-6 lg:justify-end">
+
+            <!-- Logo móvil (solo visible en < lg) -->
+            <div class="flex items-center gap-2 lg:hidden">
+                <div class="w-7 h-7 rounded-lg bg-primary-800 flex items-center justify-center">
+                    <lib-ui-icon icon="building" [size]="14" class="text-white" />
+                </div>
+                <span class="text-surface-800 dark:text-surface-100 font-semibold text-base">ERP Solid</span>
+            </div>
+
+            <!-- Toggle de tema -->
+            <button
+                (click)="theme.toggle()"
+                class="w-9 h-9 rounded-lg flex items-center justify-center
+                       text-surface-500 hover:text-surface-700 hover:bg-surface-100
+                       dark:text-surface-400 dark:hover:text-surface-200 dark:hover:bg-surface-800
+                       transition-colors duration-150"
+                aria-label="Cambiar tema"
+            >
+                @if (theme.isDark()) {
+                    <lib-ui-icon icon="sun" [size]="17" />
+                } @else {
+                    <lib-ui-icon icon="moon" [size]="17" />
+                }
+            </button>
+        </header>
+
+        <!-- Slot del formulario -->
+        <div class="flex-1 flex items-center justify-center px-6 py-10">
+            <div class="w-full max-w-[400px]">
+                <router-outlet />
+            </div>
+        </div>
+
+    </main>
+</div>
