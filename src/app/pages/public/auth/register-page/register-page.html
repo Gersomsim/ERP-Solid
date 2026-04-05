@@ -1,1 +1,169 @@
-<p>register-page works!</p>
+<!-- Encabezado -->
+<div class="mb-6">
+    <h2 class="text-2xl font-bold text-surface-800 dark:text-surface-50 tracking-tight">
+        Crear cuenta
+    </h2>
+    <p class="mt-1.5 text-sm text-surface-500 dark:text-surface-400">
+        Configura tu empresa y tu acceso en dos pasos
+    </p>
+</div>
+
+<!-- Stepper -->
+<div class="mb-8">
+    <lib-ui-stepper [steps]="steps" [currentStep]="currentStep()" />
+</div>
+
+<!-- ── Paso 1 · Empresa ──────────────────────────────────── -->
+@if (currentStep() === 0) {
+    <div>
+        <div class="mb-6">
+            <p class="text-sm font-semibold text-surface-700 dark:text-surface-300">
+                Información de la empresa
+            </p>
+            <p class="text-xs text-surface-400 dark:text-surface-500 mt-0.5">
+                Esta será la identidad de tu organización en la plataforma
+            </p>
+        </div>
+
+        <form class="flex flex-col gap-5" novalidate>
+
+            <!-- Nombre -->
+            <lib-ui-input
+                label="Nombre de la empresa"
+                type="text"
+                placeholder="Acme Corp"
+                prefixIcon="building"
+            />
+
+            <!-- Slug -->
+            <lib-ui-input
+                label="Identificador único"
+                type="text"
+                placeholder="acme-corp"
+                prefixIcon="link"
+                hint="Tu espacio será accesible en: erp.app/acme-corp"
+            />
+
+            <!-- RFC / Tax ID -->
+            <lib-ui-input
+                label="RFC / Identificador fiscal"
+                type="text"
+                placeholder="ACM920101XXX"
+                prefixIcon="landmark"
+                hint="Usado para documentos fiscales y facturación"
+            />
+
+            <!-- Siguiente -->
+            <lib-ui-button
+                type="button"
+                [fullWidth]="true"
+                size="lg"
+                class="mt-1"
+                (click)="nextStep()"
+            >
+                Siguiente
+                <lib-ui-icon icon="arrow-right" [size]="16" />
+            </lib-ui-button>
+
+        </form>
+    </div>
+}
+
+<!-- ── Paso 2 · Cuenta ──────────────────────────────────── -->
+@if (currentStep() === 1) {
+    <div>
+        <div class="mb-6">
+            <p class="text-sm font-semibold text-surface-700 dark:text-surface-300">
+                Tu cuenta de administrador
+            </p>
+            <p class="text-xs text-surface-400 dark:text-surface-500 mt-0.5">
+                Tendrás acceso total para configurar tu organización
+            </p>
+        </div>
+
+        <form class="flex flex-col gap-5" novalidate>
+
+            <!-- Nombre y Apellido -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <lib-ui-input
+                    label="Nombre"
+                    type="text"
+                    placeholder="Ana"
+                    prefixIcon="user"
+                />
+                <lib-ui-input
+                    label="Apellido"
+                    type="text"
+                    placeholder="García"
+                />
+            </div>
+
+            <!-- Email -->
+            <lib-ui-input
+                label="Correo electrónico"
+                type="email"
+                placeholder="ana@acme-corp.com"
+                prefixIcon="mail"
+            />
+
+            <!-- Contraseña -->
+            <lib-ui-input
+                label="Contraseña"
+                type="password"
+                placeholder="••••••••"
+                prefixIcon="lock"
+                hint="Mínimo 8 caracteres"
+            />
+
+            <!-- Confirmar contraseña -->
+            <lib-ui-input
+                label="Confirmar contraseña"
+                type="password"
+                placeholder="••••••••"
+                prefixIcon="lock"
+            />
+
+            <!-- Acciones -->
+            <div class="flex gap-3 mt-1">
+                <lib-ui-button
+                    type="button"
+                    variant="secondary"
+                    size="lg"
+                    (click)="prevStep()"
+                >
+                    <lib-ui-icon icon="arrow-left" [size]="16" />
+                    Atrás
+                </lib-ui-button>
+
+                <lib-ui-button
+                    type="submit"
+                    [fullWidth]="true"
+                    size="lg"
+                >
+                    Crear cuenta
+                </lib-ui-button>
+            </div>
+
+        </form>
+    </div>
+}
+
+<!-- Divisor -->
+<div class="flex items-center gap-3 my-6">
+    <div class="flex-1 h-px bg-surface-200 dark:bg-surface-700"></div>
+    <span class="text-xs text-surface-400 dark:text-surface-500 font-medium">o</span>
+    <div class="flex-1 h-px bg-surface-200 dark:bg-surface-700"></div>
+</div>
+
+<!-- Link a login -->
+<p class="text-center text-sm text-surface-500 dark:text-surface-400">
+    ¿Ya tienes una cuenta?
+    <a
+        routerLink="/auth/login"
+        class="font-semibold text-primary-800 hover:text-primary-600
+               dark:text-primary-400 dark:hover:text-primary-300
+               transition-colors duration-150 ml-1"
+    >
+        Iniciar sesión
+    </a>
+</p>
