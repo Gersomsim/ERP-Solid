@@ -15,13 +15,21 @@
 
         <!-- Prefix icon -->
         @if (prefixIcon()) {
-            <div class="absolute left-3 flex items-center pointer-events-none
-                        text-surface-400 dark:text-surface-500">
+            <div
+                class="absolute left-3 flex items-center pointer-events-none transition-colors duration-150"
+                [class]="
+                    showError()
+                        ? 'text-danger-500'
+                        : showValid()
+                            ? 'text-success-500'
+                            : 'text-surface-400 dark:text-surface-500'
+                "
+            >
                 <lib-ui-icon [icon]="prefixIcon()!" [size]="16" />
             </div>
         }
 
-        <!-- Input -->
+        <!-- Input nativo -->
         <input
             [id]="uid"
             [type]="resolvedType()"
@@ -33,25 +41,43 @@
             [class]="[
                 'w-full h-11 rounded-lg border bg-white text-surface-800 text-sm',
                 'placeholder:text-surface-400',
-                'transition-colors duration-150 outline-none',
-                'focus:ring-2',
+                'transition-colors duration-150 outline-none focus:ring-2',
                 'disabled:opacity-50 disabled:cursor-not-allowed',
                 'dark:bg-surface-800 dark:text-surface-100 dark:placeholder:text-surface-500',
                 prefixIcon() ? 'pl-10' : 'pl-3.5',
                 type() === 'password' ? 'pr-10' : 'pr-3.5',
-                error()
+                showError()
                     ? 'border-danger-500 focus:border-danger-500 focus:ring-danger-500/20 dark:border-danger-500'
-                    : 'border-surface-200 focus:border-primary-500 focus:ring-primary-500/20 dark:border-surface-700 dark:focus:border-primary-500'
+                    : showValid()
+                        ? 'border-success-500 focus:border-success-500 focus:ring-success-500/20 dark:border-success-500'
+                        : 'border-surface-200 focus:border-primary-500 focus:ring-primary-500/20 dark:border-surface-700 dark:focus:border-primary-500'
             ].join(' ')"
         />
 
-        <!-- Password toggle -->
+        <!-- Ícono de validación (derecha, solo cuando no es password) -->
+        @if (type() !== 'password') {
+            @if (showError()) {
+                <div class="absolute right-3 flex items-center pointer-events-none text-danger-500">
+                    <lib-ui-icon icon="circle-alert" [size]="15" />
+                </div>
+            } @else if (showValid()) {
+                <div class="absolute right-3 flex items-center pointer-events-none text-success-500">
+                    <lib-ui-icon icon="circle-check" [size]="15" />
+                </div>
+            }
+        }
+
+        <!-- Password toggle (reemplaza el ícono de validación) -->
         @if (type() === 'password') {
             <button
                 type="button"
                 (click)="togglePassword()"
-                class="absolute right-3 flex items-center text-surface-400 hover:text-surface-600
-                       dark:text-surface-500 dark:hover:text-surface-300 transition-colors duration-150"
+                class="absolute right-3 flex items-center transition-colors duration-150"
+                [class]="
+                    showError()
+                        ? 'text-danger-400 hover:text-danger-500'
+                        : 'text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300'
+                "
                 [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
             >
                 @if (showPassword()) {
@@ -63,16 +89,15 @@
         }
     </div>
 
-    <!-- Error -->
-    @if (error()) {
-        <p class="flex items-center gap-1.5 text-xs text-danger-500">
-            <lib-ui-icon icon="circle-alert" [size]="13" />
-            {{ error() }}
+    <!-- Mensaje de error -->
+    @if (showError() && errorMessage()) {
+        <p class="flex items-center gap-1.5 text-xs text-danger-500 animate-in fade-in duration-150">
+            {{ errorMessage() }}
         </p>
     }
 
-    <!-- Hint -->
-    @if (hint() && !error()) {
+    <!-- Hint (solo si no hay error) -->
+    @if (hint() && !showError()) {
         <p class="text-xs text-surface-400 dark:text-surface-500">{{ hint() }}</p>
     }
 
