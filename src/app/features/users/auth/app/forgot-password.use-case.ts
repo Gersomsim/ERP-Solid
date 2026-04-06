@@ -7,8 +7,6 @@ import { AuthToken } from '../infra'
 export class ForgotPasswordUseCase {
 	private readonly authRepository = inject<AuthRepository>(AuthToken)
 
-	constructor() {}
-
 	execute(email: string): Promise<void> {
 		return this.authRepository.forgotPassword(email)
 	}
