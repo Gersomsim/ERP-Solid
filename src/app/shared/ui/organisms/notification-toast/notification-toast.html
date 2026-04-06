@@ -1,0 +1,45 @@
+<!-- Contenedor fijo: bottom en móvil, top-right en desktop -->
+<div
+    class="fixed z-50 flex flex-col gap-2 pointer-events-none
+           bottom-4 left-4 right-4
+           sm:bottom-auto sm:top-4 sm:left-auto sm:right-4 sm:w-96"
+>
+    @for (notification of service.notifications(); track trackById($index, notification)) {
+        <div
+            class="toast-enter pointer-events-auto relative overflow-hidden
+                   flex items-start gap-3 px-4 py-3.5 rounded-xl
+                   border border-l-4 shadow-lg shadow-surface-900/10
+                   bg-white dark:bg-surface-800
+                   border-surface-200 dark:border-surface-700"
+            [class]="config(notification.type).borderClass"
+        >
+            <!-- Ícono -->
+            <div class="mt-0.5 shrink-0" [class]="config(notification.type).iconClass">
+                <lib-ui-icon [icon]="config(notification.type).icon" [size]="18" />
+            </div>
+
+            <!-- Mensaje -->
+            <p class="flex-1 text-sm text-surface-700 dark:text-surface-200 leading-snug pt-0.5">
+                {{ notification.message }}
+            </p>
+
+            <!-- Cerrar -->
+            <button
+                (click)="service.dismiss(notification.id)"
+                class="shrink-0 text-surface-400 hover:text-surface-600
+                       dark:text-surface-500 dark:hover:text-surface-300
+                       transition-colors duration-150 mt-0.5"
+                aria-label="Cerrar notificación"
+            >
+                <lib-ui-icon icon="x" [size]="16" />
+            </button>
+
+            <!-- Barra de progreso -->
+            <div
+                class="absolute bottom-0 left-0 right-0 h-0.5 origin-left"
+                [class]="config(notification.type).progressClass"
+                [style.animation]="'toast-shrink ' + notification.duration + 'ms linear forwards'"
+            ></div>
+        </div>
+    }
+</div>
