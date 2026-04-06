@@ -2,7 +2,6 @@ import { Component, inject, signal } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
 import { NotificationService } from '@core/notifications'
-import { AppError } from '@core/utils'
 
 import { Button, Icon } from '@ui/atoms'
 
@@ -29,7 +28,7 @@ export class ForgotPasswordPage {
 			await this.forgotPasswordUseCase.execute(email)
 			this.submitted.set(true)
 		} catch (error) {
-			this.notification.error((error as AppError).message)
+			console.error(error)
 		} finally {
 			this.loading.set(false)
 		}

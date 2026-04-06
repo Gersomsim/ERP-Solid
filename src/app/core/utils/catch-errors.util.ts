@@ -36,7 +36,7 @@ export class CatchErrors {
         } satisfies AppError))
     }
 
-    private static fromHttp(error: HttpErrorResponse): AppError {
+    static fromHttp(error: HttpErrorResponse): AppError {
         const serverMessage = error.error?.message ?? error.message
 
         const messages: Partial<Record<number, string>> = {
