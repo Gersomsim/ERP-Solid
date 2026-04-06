@@ -1,4 +1,4 @@
-import { Component, inject, output } from '@angular/core'
+import { Component, inject, input, output } from '@angular/core'
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 
 import { Button, Input } from '@ui/atoms'
@@ -11,6 +11,7 @@ import { Button, Input } from '@ui/atoms'
 })
 export class ForgotPasswordForm {
 	private readonly fb = inject(FormBuilder)
+	loading = input<boolean>(false)
 
 	onSubmit = output<string>()
 

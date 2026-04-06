@@ -1,21 +1,38 @@
-import { Component, signal } from '@angular/core'
+import { Component, inject, signal } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
-import { ForgotPasswordForm } from 'src/app/features/users/auth/presentation'
+import { NotificationService } from '@core/notifications'
+import { AppError } from '@core/utils'
 
-import { Button } from '@ui/atoms/button/button'
-import { Icon } from '@ui/atoms/icon/icon'
+import { Button, Icon } from '@ui/atoms'
+
+import { ForgotPasswordUseCase } from '@features/users/auth/app'
+import { AuthTokenProvider } from '@features/users/auth/infra'
+import { ForgotPasswordForm } from '@features/users/auth/presentation'
 
 @Component({
 	selector: 'app-forgot-password-page',
 	imports: [RouterLink, Button, Icon, ForgotPasswordForm],
 	templateUrl: './forgot-password-page.html',
+	providers: [ForgotPasswordUseCase, AuthTokenProvider],
 })
 export class ForgotPasswordPage {
-	protected submitted = signal(false)
+	private readonly forgotPasswordUseCase = inject(ForgotPasswordUseCase)
+	private readonly notification = inject(NotificationService)
 
-	submit(email: string): void {
-		this.submitted.set(true)
+	protected submitted = signal(false)
+	protected loading = signal(false)
+
+	async submit(email: string): Promise<void> {
+		try {
+			this.loading.set(true)
+			await this.forgotPasswordUseCase.execute(email)
+			this.submitted.set(true)
+		} catch (error) {
+			this.notification.error((error as AppError).message)
+		} finally {
+			this.loading.set(false)
+		}
 	}
 
 	protected resend(): void {
