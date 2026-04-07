@@ -6,4 +6,5 @@ export interface AuthRepository {
 	logout(): Promise<void>
 	register(email: string, password: string): Promise<void>
 	resetPassword(token: string, password: string): Promise<void>
+	validateToken(token: string, type: string): Promise<boolean>
 }
