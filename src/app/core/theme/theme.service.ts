@@ -6,21 +6,32 @@ const STORAGE_KEY = 'erp-theme'
 export class ThemeService {
     isDark = signal(false)
 
+    private readonly _mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
+
     init(): void {
         const stored = localStorage.getItem(STORAGE_KEY)
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-        const dark = stored !== null ? stored === 'dark' : prefersDark
+        const dark = stored !== null ? stored === 'dark' : this._mediaQuery.matches
 
-        this.apply(dark)
+        this.apply(dark, false)
+
+        // Escuchar cambios del sistema solo cuando el usuario no ha elegido manualmente
+        this._mediaQuery.addEventListener('change', e => {
+            if (localStorage.getItem(STORAGE_KEY) === null) {
+                this.apply(e.matches, false)
+            }
+        })
     }
 
     toggle(): void {
-        this.apply(!this.isDark())
+        this.apply(!this.isDark(), true)
     }
 
-    private apply(dark: boolean): void {
+    private apply(dark: boolean, persist: boolean): void {
         this.isDark.set(dark)
         document.documentElement.classList.toggle('dark', dark)
-        localStorage.setItem(STORAGE_KEY, dark ? 'dark' : 'light')
+
+        if (persist) {
+            localStorage.setItem(STORAGE_KEY, dark ? 'dark' : 'light')
+        }
     }
 }
