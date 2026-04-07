@@ -4,10 +4,11 @@ import { RouterOutlet } from '@angular/router'
 import { ThemeService } from '@core/theme'
 
 import { NotificationToast } from '@ui/organisms/notification-toast/notification-toast'
+import { ProcessLoader } from '@ui/organisms/process-loader/process-loader'
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, NotificationToast],
+    imports: [RouterOutlet, NotificationToast, ProcessLoader],
     templateUrl: './app.html',
     styleUrl: './app.css',
 })

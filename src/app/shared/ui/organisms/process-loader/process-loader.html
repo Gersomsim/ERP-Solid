@@ -1,0 +1,94 @@
+@if (loader.visible()) {
+    <!-- Overlay -->
+    <div class="fixed inset-0 z-[200] flex items-center justify-center
+                bg-surface-950/60 backdrop-blur-sm">
+
+        <!-- Panel -->
+        <div class="w-full max-w-sm mx-4 rounded-2xl overflow-hidden
+                    bg-white dark:bg-surface-800
+                    border border-surface-100 dark:border-surface-700
+                    shadow-2xl shadow-surface-950/20">
+
+            <!-- Header con branding -->
+            <div class="flex items-center gap-3 px-6 pt-6 pb-5
+                        border-b border-surface-100 dark:border-surface-700">
+                <div class="w-8 h-8 rounded-lg bg-primary-800 dark:bg-primary-700
+                            flex items-center justify-center shrink-0">
+                    <lib-ui-icon icon="building" [size]="15" class="text-white" />
+                </div>
+                <div>
+                    <p class="text-sm font-semibold text-surface-800 dark:text-surface-100">
+                        ERP Solid
+                    </p>
+                    <p class="text-xs text-surface-400 dark:text-surface-500">
+                        Procesando, por favor espera...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Lista de pasos -->
+            <ul class="px-6 py-5 flex flex-col gap-4">
+                @for (step of loader.steps(); track trackByIndex($index)) {
+                    <li class="flex items-center gap-3.5">
+
+                        <!-- Ícono de estado -->
+                        <div
+                            class="shrink-0 transition-colors duration-300"
+                            [class]="
+                                step.status === 'done'    ? 'text-success-500' :
+                                step.status === 'error'   ? 'text-danger-500'  :
+                                step.status === 'running' ? 'text-primary-600 dark:text-primary-400' :
+                                                            'text-surface-300 dark:text-surface-600'
+                            "
+                        >
+                            <lib-ui-icon
+                                [icon]="iconFor(step.status)"
+                                [size]="18"
+                                [class]="step.status === 'running' ? 'animate-spin' : ''"
+                            />
+                        </div>
+
+                        <!-- Label -->
+                        <span
+                            class="text-sm transition-colors duration-300"
+                            [class]="
+                                step.status === 'done'    ? 'text-surface-400 dark:text-surface-500 line-through' :
+                                step.status === 'error'   ? 'text-danger-500' :
+                                step.status === 'running' ? 'text-surface-800 dark:text-surface-100 font-medium' :
+                                                            'text-surface-400 dark:text-surface-600'
+                            "
+                        >
+                            {{ step.label }}
+                        </span>
+
+                        <!-- Checkmark animado en done -->
+                        @if (step.status === 'done') {
+                            <div class="ml-auto shrink-0 step-done-enter">
+                                <lib-ui-icon icon="check" [size]="14" class="text-success-500" />
+                            </div>
+                        }
+
+                        @if (step.status === 'error') {
+                            <div class="ml-auto shrink-0">
+                                <lib-ui-icon icon="x" [size]="14" class="text-danger-500" />
+                            </div>
+                        }
+
+                    </li>
+                }
+            </ul>
+
+            <!-- Barra de progreso inferior -->
+            <div class="h-1 bg-surface-100 dark:bg-surface-700">
+                <div
+                    class="h-full bg-primary-800 dark:bg-primary-600 transition-all duration-500"
+                    [style.width.%]="
+                        (loader.steps().filter(s => s.status === 'done' || s.status === 'error').length
+                        / loader.steps().length) * 100
+                    "
+                ></div>
+            </div>
+
+        </div>
+    </div>
+}
