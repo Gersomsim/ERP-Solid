@@ -30,6 +30,7 @@ export class ResetPasswordPage {
 	private readonly token = toSignal(this.route.queryParams.pipe(map(params => params['token'])))
 	protected submitted = signal(false)
 	protected loading = signal(false)
+	protected tokenError = signal('')
 
 	constructor() {
 		this.loader.execute([
@@ -46,7 +47,6 @@ export class ResetPasswordPage {
 			await this.resetPasswordUseCase.execute(this.token()!, password)
 			this.submitted.set(true)
 		} catch (error) {
-			console.error(error)
 		} finally {
 			this.loading.set(false)
 		}
@@ -56,10 +56,17 @@ export class ResetPasswordPage {
 		try {
 			await this.validateTokenUseCase.execute(this.token()!, 'reset-password')
 		} catch (error) {
-			const message = (error as AppError).message
-			if (message === 'Token invalido') {
-				this.router.navigate(['/auth/login'])
-			}
+			const message = error as AppError
+			this.tokenError.set(message.message)
+		} finally {
+			this.loading.set(false)
+			this.handleTokenError()
+		}
+	}
+
+	private handleTokenError(): void {
+		if (this.tokenError() === 'Token invalido') {
+			this.router.navigate(['/auth/login'])
 		}
 	}
 }

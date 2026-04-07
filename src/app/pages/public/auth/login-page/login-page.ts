@@ -1,12 +1,32 @@
-import { Component } from '@angular/core'
+import { Component, inject, signal } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
-import { Button } from '@ui/atoms/button/button'
-import { Input } from '@ui/atoms/input/input'
+import { AuthState } from '@core/auth/auth.state'
+
+import { LoginUseCase } from '@features/users/auth/app'
+import { AuthTokenProvider } from '@features/users/auth/infra'
+import { LoginForm } from '@features/users/auth/presentation'
 
 @Component({
-    selector: 'app-login-page',
-    imports: [RouterLink, Button, Input],
-    templateUrl: './login-page.html',
+	selector: 'app-login-page',
+	imports: [RouterLink, LoginForm],
+	templateUrl: './login-page.html',
+	providers: [LoginUseCase, AuthTokenProvider],
 })
-export class LoginPage {}
+export class LoginPage {
+	private readonly loginUseCase = inject(LoginUseCase)
+	private readonly authState = inject(AuthState)
+
+	loading = signal<boolean>(false)
+
+	async submit(login: { email: string; password: string }): Promise<void> {
+		this.loading.set(true)
+		try {
+			const auth = await this.loginUseCase.execute(login.email, login.password)
+			this.authState.setAuth(auth)
+		} catch (error) {
+		} finally {
+			this.loading.set(false)
+		}
+	}
+}

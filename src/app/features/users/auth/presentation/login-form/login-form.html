@@ -1,1 +1,40 @@
-<p>login-form works!</p>
+<form
+	class="flex flex-col gap-5"
+	novalidate
+	[formGroup]="loginForm"
+	(ngSubmit)="onSubmit()"
+>
+	<!-- Email -->
+	<lib-ui-input
+		label="Correo electrónico"
+		type="email"
+		placeholder="tu@empresa.com"
+		prefixIcon="mail"
+		formControlName="email"
+	/>
+
+	<!-- Contraseña -->
+	<lib-ui-input
+		label="Contraseña"
+		type="password"
+		placeholder="••••••••"
+		prefixIcon="lock"
+		formControlName="password"
+	/>
+
+	<!-- Recordarme / Olvidé mi contraseña -->
+	<div class="flex items-center justify-between gap-4">
+		<ng-content></ng-content>
+	</div>
+
+	<!-- Botón de submit -->
+	<lib-ui-button
+		type="submit"
+		[fullWidth]="true"
+		size="lg"
+		class="mt-1"
+		[loading]="loading()"
+	>
+		Iniciar sesión
+	</lib-ui-button>
+</form>

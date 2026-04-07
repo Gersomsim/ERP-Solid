@@ -1,99 +1,62 @@
 <!-- Encabezado -->
 <div class="mb-8">
-    <h2 class="text-2xl font-bold text-surface-800 dark:text-surface-50 tracking-tight">
-        Bienvenido de vuelta
-    </h2>
-    <p class="mt-1.5 text-sm text-surface-500 dark:text-surface-400">
-        Ingresa tus credenciales para acceder a tu cuenta
-    </p>
+	<h2 class="text-2xl font-bold text-surface-800 dark:text-surface-50 tracking-tight">Bienvenido de vuelta</h2>
+	<p class="mt-1.5 text-sm text-surface-500 dark:text-surface-400">
+		Ingresa tus credenciales para acceder a tu cuenta
+	</p>
 </div>
 
 <!-- Formulario -->
-<form class="flex flex-col gap-5" novalidate>
+<app-login-form
+	(Submit)="submit($event)"
+	[loading]="loading()"
+>
+	<label class="flex items-center gap-2.5 cursor-pointer group">
+		<div class="relative flex items-center">
+			<input
+				type="checkbox"
+				class="peer w-4 h-4 rounded border border-surface-300 bg-white checked:bg-primary-800 checked:border-primary-800 focus-visible:ring-2 focus-visible:ring-primary-500/30 dark:border-surface-600 dark:bg-surface-800 dark:checked:bg-primary-700 dark:checked:border-primary-700 cursor-pointer transition-colors duration-150 appearance-none"
+			/>
+			<!-- Checkmark svg -->
+			<svg
+				class="absolute inset-0 m-auto w-2.5 h-2.5 text-white pointer-events-none opacity-0 peer-checked:opacity-100 transition-opacity duration-150"
+				viewBox="0 0 10 8"
+				fill="none"
+			>
+				<path
+					d="M1 4l2.5 2.5L9 1"
+					stroke="currentColor"
+					stroke-width="1.8"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				/>
+			</svg>
+		</div>
+		<span class="text-sm text-surface-600 dark:text-surface-400 select-none">Recordarme</span>
+	</label>
 
-    <!-- Email -->
-    <lib-ui-input
-        label="Correo electrónico"
-        type="email"
-        placeholder="tu@empresa.com"
-        prefixIcon="mail"
-    />
-
-    <!-- Contraseña -->
-    <lib-ui-input
-        label="Contraseña"
-        type="password"
-        placeholder="••••••••"
-        prefixIcon="lock"
-    />
-
-    <!-- Recordarme / Olvidé mi contraseña -->
-    <div class="flex items-center justify-between gap-4">
-        <label class="flex items-center gap-2.5 cursor-pointer group">
-            <div class="relative flex items-center">
-                <input
-                    type="checkbox"
-                    class="peer w-4 h-4 rounded border border-surface-300 bg-white
-                           checked:bg-primary-800 checked:border-primary-800
-                           focus-visible:ring-2 focus-visible:ring-primary-500/30
-                           dark:border-surface-600 dark:bg-surface-800
-                           dark:checked:bg-primary-700 dark:checked:border-primary-700
-                           cursor-pointer transition-colors duration-150 appearance-none"
-                />
-                <!-- Checkmark svg -->
-                <svg
-                    class="absolute inset-0 m-auto w-2.5 h-2.5 text-white pointer-events-none
-                           opacity-0 peer-checked:opacity-100 transition-opacity duration-150"
-                    viewBox="0 0 10 8"
-                    fill="none"
-                >
-                    <path
-                        d="M1 4l2.5 2.5L9 1"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    />
-                </svg>
-            </div>
-            <span class="text-sm text-surface-600 dark:text-surface-400 select-none">
-                Recordarme
-            </span>
-        </label>
-
-        <a
-            routerLink="/auth/forgot-password"
-            class="text-sm text-primary-800 hover:text-primary-600
-                   dark:text-primary-400 dark:hover:text-primary-300
-                   font-medium transition-colors duration-150 shrink-0"
-        >
-            ¿Olvidaste tu contraseña?
-        </a>
-    </div>
-
-    <!-- Botón de submit -->
-    <lib-ui-button type="submit" [fullWidth]="true" size="lg" class="mt-1">
-        Iniciar sesión
-    </lib-ui-button>
-
-</form>
+	<a
+		routerLink="/auth/forgot-password"
+		class="text-sm text-primary-800 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 font-medium transition-colors duration-150 shrink-0"
+	>
+		¿Olvidaste tu contraseña?
+	</a>
+</app-login-form>
 
 <!-- Divisor -->
 <div class="flex items-center gap-3 my-6">
-    <div class="flex-1 h-px bg-surface-200 dark:bg-surface-700"></div>
-    <span class="text-xs text-surface-400 dark:text-surface-500 font-medium">o</span>
-    <div class="flex-1 h-px bg-surface-200 dark:bg-surface-700"></div>
+	<div class="flex-1 h-px bg-surface-200 dark:bg-surface-700"></div>
+	<span class="text-xs text-surface-400 dark:text-surface-500 font-medium">o</span>
+	<div class="flex-1 h-px bg-surface-200 dark:bg-surface-700"></div>
 </div>
 
 <!-- Link a registro -->
 <p class="text-center text-sm text-surface-500 dark:text-surface-400">
-    ¿No tienes una cuenta?
-    <a
-        routerLink="/auth/register"
-        class="font-semibold text-primary-800 hover:text-primary-600
-               dark:text-primary-400 dark:hover:text-primary-300
-               transition-colors duration-150 ml-1"
-    >
-        Crear cuenta
-    </a>
+	¿No tienes una cuenta?
+	<a
+		routerLink="/auth/register"
+		class="font-semibold text-primary-800 hover:text-primary-600 dark:text-primary-400 dark:hover:text-primary-300 transition-colors duration-150 ml-1"
+	>
+		Crear cuenta
+	</a>
 </p>

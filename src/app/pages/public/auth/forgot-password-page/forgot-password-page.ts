@@ -1,8 +1,6 @@
 import { Component, inject, signal } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
-import { NotificationService } from '@core/notifications'
-
 import { Button, Icon } from '@ui/atoms'
 
 import { ForgotPasswordUseCase } from '@features/users/auth/app'
@@ -17,7 +15,6 @@ import { ForgotPasswordForm } from '@features/users/auth/presentation'
 })
 export class ForgotPasswordPage {
 	private readonly forgotPasswordUseCase = inject(ForgotPasswordUseCase)
-	private readonly notification = inject(NotificationService)
 
 	protected submitted = signal(false)
 	protected loading = signal(false)
@@ -28,7 +25,6 @@ export class ForgotPasswordPage {
 			await this.forgotPasswordUseCase.execute(email)
 			this.submitted.set(true)
 		} catch (error) {
-			console.error(error)
 		} finally {
 			this.loading.set(false)
 		}

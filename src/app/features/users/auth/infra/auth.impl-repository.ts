@@ -5,7 +5,10 @@ import { catchError, firstValueFrom, map } from 'rxjs'
 import { HttpService } from '@core/http'
 import { CatchErrors } from '@core/utils'
 
+import { UserMap } from '@features/users/user/infra'
+
 import { Auth, AuthRepository } from '../domain'
+import { AuthDto } from './auth.dto'
 import { TokenDto } from './token.dto'
 
 @Injectable()
@@ -22,9 +25,14 @@ export class AuthImplRepository implements AuthRepository {
 		return firstValueFrom(resp)
 	}
 	login(email: string, password: string): Promise<Auth> {
-		const resp = this.http.post<Auth>(`${this.path}/login`, { email, password }).pipe(
+		const resp = this.http.post<AuthDto>(`${this.path}/login`, { email, password }).pipe(
 			catchError(CatchErrors.handle),
-			map(resp => resp.data),
+			map(resp => {
+				return {
+					token: resp.data.token,
+					user: UserMap.toDomain(resp.data.user),
+				}
+			}),
 		)
 
 		return firstValueFrom(resp)
@@ -53,7 +61,9 @@ export class AuthImplRepository implements AuthRepository {
 
 		return firstValueFrom(resp)
 	}
-
+	/*
+	El path es token/validate ya que pertenece a otro recurso de la api
+	*/
 	validateToken(token: string, type: string): Promise<boolean> {
 		const resp = this.http.post<TokenDto>(`token/validate`, { token, type }).pipe(
 			catchError(CatchErrors.handle),
