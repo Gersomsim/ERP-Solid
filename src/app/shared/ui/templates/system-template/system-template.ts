@@ -1,4 +1,4 @@
-import { Component, computed, inject, input, signal } from '@angular/core'
+import { Component, computed, inject, signal } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 
 import { AuthState } from '@core/auth'
@@ -23,8 +23,6 @@ export class SystemTemplate {
 	protected theme = inject(ThemeService)
 	protected authState = inject(AuthState)
 
-	loading = input(false)
-
 	protected collapsed = signal(false)
 	protected userMenuOpen = signal(false)
 
@@ -34,8 +32,6 @@ export class SystemTemplate {
 	})
 
 	protected roleName = computed(() => this.authState.role()?.name ?? '—')
-
-	protected readonly skeletonItems = Array(6).fill(null)
 
 	protected readonly menuItems: MenuItem[] = [
 		{ icon: 'house', label: 'Dashboard', route: 'dashboard' },

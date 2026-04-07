@@ -33,57 +33,29 @@
         <!-- Nav -->
         <nav class="flex-1 py-3 overflow-y-auto overflow-x-hidden">
             <ul class="space-y-0.5 px-2">
-
-                @if (loading()) {
-                    <!-- Skeleton items mientras carga el menú -->
-                    @for (item of skeletonItems; track $index) {
-                        <li>
-                            <div class="flex items-center gap-3 px-3 py-2.5 rounded-lg">
-                                <div
-                                    class="w-[18px] h-[18px] rounded bg-surface-200
-                                           dark:bg-surface-700 animate-pulse flex-shrink-0"
-                                ></div>
-                                @if (!collapsed()) {
-                                    <div
-                                        class="h-3 bg-surface-200 dark:bg-surface-700
-                                               rounded animate-pulse"
-                                        [style.width.px]="55 + ($index % 4) * 18"
-                                    ></div>
-                                }
-                            </div>
-                        </li>
-                    }
-                } @else {
-                    <!-- Items reales (filtrados por permiso) -->
-                    @for (item of visibleItems(); track item.route) {
-                        <li>
-                            <a
-                                [routerLink]="item.route"
-                                routerLinkActive="!bg-primary-50 dark:!bg-primary-950/40
-                                                 !text-primary-700 dark:!text-primary-300
-                                                 font-semibold"
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm
-                                       font-medium text-surface-600 dark:text-surface-400
-                                       hover:bg-surface-100 dark:hover:bg-surface-800
-                                       hover:text-surface-900 dark:hover:text-surface-100
-                                       transition-colors duration-150"
-                                [title]="collapsed() ? item.label : ''"
-                            >
-                                <lib-ui-icon
-                                    [icon]="item.icon"
-                                    [size]="18"
-                                    class="flex-shrink-0"
-                                />
-                                @if (!collapsed()) {
-                                    <span class="whitespace-nowrap overflow-hidden">
-                                        {{ item.label }}
-                                    </span>
-                                }
-                            </a>
-                        </li>
-                    }
+                @for (item of visibleItems(); track item.route) {
+                    <li>
+                        <a
+                            [routerLink]="item.route"
+                            routerLinkActive="!bg-primary-50 dark:!bg-primary-950/40
+                                             !text-primary-700 dark:!text-primary-300
+                                             font-semibold"
+                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm
+                                   font-medium text-surface-600 dark:text-surface-400
+                                   hover:bg-surface-100 dark:hover:bg-surface-800
+                                   hover:text-surface-900 dark:hover:text-surface-100
+                                   transition-colors duration-150"
+                            [title]="collapsed() ? item.label : ''"
+                        >
+                            <lib-ui-icon [icon]="item.icon" [size]="18" class="flex-shrink-0" />
+                            @if (!collapsed()) {
+                                <span class="whitespace-nowrap overflow-hidden">
+                                    {{ item.label }}
+                                </span>
+                            }
+                        </a>
+                    </li>
                 }
-
             </ul>
         </nav>
 
@@ -154,7 +126,6 @@
                                hover:bg-surface-100 dark:hover:bg-surface-800
                                transition-colors duration-150"
                     >
-                        <!-- Avatar -->
                         <div
                             class="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/50
                                    flex items-center justify-center flex-shrink-0"
@@ -166,31 +137,19 @@
                             />
                         </div>
 
-                        <!-- Nombre y rol -->
                         <div class="hidden sm:flex flex-col items-start leading-none">
-                            @if (loading()) {
-                                <div
-                                    class="w-20 h-3 bg-surface-200 dark:bg-surface-700
-                                           rounded animate-pulse mb-1"
-                                ></div>
-                                <div
-                                    class="w-14 h-2.5 bg-surface-200 dark:bg-surface-700
-                                           rounded animate-pulse"
-                                ></div>
-                            } @else {
-                                <span
-                                    class="text-sm font-medium text-surface-800
-                                           dark:text-surface-100 truncate max-w-[130px]"
-                                >
-                                    {{ displayName() }}
-                                </span>
-                                <span
-                                    class="text-xs text-surface-500 dark:text-surface-400
-                                           truncate max-w-[130px]"
-                                >
-                                    {{ roleName() }}
-                                </span>
-                            }
+                            <span
+                                class="text-sm font-medium text-surface-800
+                                       dark:text-surface-100 truncate max-w-[130px]"
+                            >
+                                {{ displayName() }}
+                            </span>
+                            <span
+                                class="text-xs text-surface-500 dark:text-surface-400
+                                       truncate max-w-[130px]"
+                            >
+                                {{ roleName() }}
+                            </span>
                         </div>
 
                         <lib-ui-icon
@@ -200,10 +159,7 @@
                         />
                     </button>
 
-                    <!-- Dropdown del usuario -->
                     @if (userMenuOpen()) {
-
-                        <!-- Backdrop invisible para cerrar al hacer click afuera -->
                         <div
                             class="fixed inset-0 z-10"
                             (click)="closeUserMenu()"
@@ -216,8 +172,6 @@
                                    shadow-lg shadow-surface-900/8 dark:shadow-surface-950/40
                                    overflow-hidden"
                         >
-
-                            <!-- Info del usuario -->
                             <div
                                 class="px-4 py-3 border-b border-surface-100 dark:border-surface-800"
                             >
@@ -235,7 +189,6 @@
                                 </p>
                             </div>
 
-                            <!-- Acciones -->
                             <div class="py-1.5">
                                 <a
                                     routerLink="profile"
@@ -264,7 +217,6 @@
                                     Cerrar sesión
                                 </button>
                             </div>
-
                         </div>
                     }
 
