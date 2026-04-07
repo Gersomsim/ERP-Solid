@@ -23,6 +23,7 @@ export class ProcessLoaderService {
                 this.updateStep(i, 'done')
             } catch (error) {
                 this.updateStep(i, 'error')
+                steps[i].onError?.(error)
                 await this.delay(1200)
                 this.hide()
                 throw error
