@@ -55,13 +55,11 @@
                             <li>
                                 <a
                                     [routerLink]="item.route"
-                                    routerLinkActive="!bg-primary-50 dark:!bg-primary-950/40
-                                                     !text-primary-700 dark:!text-primary-300
-                                                     font-semibold"
+                                    routerLinkActive="nav-active"
                                     class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm
-                                           font-medium text-surface-600 dark:text-surface-400
-                                           hover:bg-surface-100 dark:hover:bg-surface-800
-                                           hover:text-surface-900 dark:hover:text-surface-100
+                                           font-medium text-surface-600 dark:text-surface-300
+                                           hover:bg-surface-100 dark:hover:bg-surface-700/50
+                                           hover:text-surface-900 dark:hover:text-white
                                            transition-colors duration-150"
                                     [title]="collapsed() ? item.label : ''"
                                 >

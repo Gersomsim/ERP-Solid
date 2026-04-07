@@ -103,6 +103,18 @@
     animation: step-done 200ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
+/* ── Active nav item (system template) ─────────────────── */
+.nav-active {
+    background-color: var(--color-primary-50);
+    color: var(--color-primary-700);
+    font-weight: 600;
+}
+
+.dark .nav-active {
+    background-color: color-mix(in srgb, var(--color-primary-500) 20%, transparent);
+    color: #ffffff;
+}
+
 @layer base {
     html {
         font-family: var(--font-sans);

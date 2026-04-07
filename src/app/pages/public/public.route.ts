@@ -11,4 +11,9 @@ export const publicRoutes: Route[] = [
 		path: 'load-data',
 		component: LoadDataPage,
 	},
+	{
+		path: '',
+		redirectTo: 'auth',
+		pathMatch: 'full',
+	},
 ]
