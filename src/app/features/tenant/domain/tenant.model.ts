@@ -3,6 +3,12 @@ export interface Tenant {
 	name: string
 	slug: string
 	taxIdentifier: string
-	settings: Record<string, any>
+	settings: Record<string, unknown>
 	status: string
+}
+
+export interface CreateTenantDto {
+	name: string
+	slug: string
+	taxIdentifier: string
 }
