@@ -44,6 +44,10 @@ export class AuthState {
 		this.persist(auth.user)
 	}
 
+	setToken(token: string): void {
+		this._token.set(token)
+	}
+
 	clear(): void {
 		this._user.set(null)
 		this._token.set(null)

@@ -37,6 +37,20 @@ export class AuthImplRepository implements AuthRepository {
 
 		return firstValueFrom(resp)
 	}
+	refreshToken(): Promise<Auth> {
+		const resp = this.http
+			.post<AuthDto>(`${this.path}/refresh`, {}, { skipAuth: true, silent: true, withCredentials: true })
+			.pipe(
+				catchError(CatchErrors.handle),
+				map(resp => ({
+					token: resp.data.token,
+					user: UserMap.toDomain(resp.data.user),
+				})),
+			)
+
+		return firstValueFrom(resp)
+	}
+
 	logout(): Promise<void> {
 		const resp = this.http.post<void>(`${this.path}/logout`, {}).pipe(
 			catchError(CatchErrors.handle),

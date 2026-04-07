@@ -4,6 +4,7 @@ import { provideRouter } from '@angular/router'
 
 import { authInterceptor } from '@core/interceptors/auth-interceptor'
 import { notificationInterceptor } from '@core/interceptors/notification-interceptor'
+import { AuthTokenProvider } from '@features/users/auth/infra'
 
 import { routes } from './app.routes'
 
@@ -12,5 +13,6 @@ export const appConfig: ApplicationConfig = {
 		provideBrowserGlobalErrorListeners(),
 		provideRouter(routes),
 		provideHttpClient(withInterceptors([authInterceptor, notificationInterceptor])),
+		AuthTokenProvider,
 	],
 }

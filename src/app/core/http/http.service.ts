@@ -7,7 +7,7 @@ import { ApiResponseDto } from '@core/dto'
 
 import { environment } from '@env/environment'
 
-import { HTTP_NOTIFY_ERROR, HTTP_NOTIFY_SUCCESS, HTTP_SILENT } from './http.context'
+import { HTTP_NOTIFY_ERROR, HTTP_NOTIFY_SUCCESS, HTTP_SILENT, HTTP_SKIP_AUTH } from './http.context'
 
 export interface RequestOptions {
     params?: Record<string, string | number | boolean>
@@ -19,6 +19,8 @@ export interface RequestOptions {
     notifySuccess?: boolean
     /** Evita el toast de error aunque falle el request */
     notifyError?: boolean
+    /** Omite el interceptor de auth — usar solo para el refresh token */
+    skipAuth?: boolean
 }
 
 @Injectable({ providedIn: 'root' })
@@ -58,6 +60,7 @@ export class HttpService {
         if (options?.silent) context.set(HTTP_SILENT, true)
         if (options?.notifySuccess === false) context.set(HTTP_NOTIFY_SUCCESS, false)
         if (options?.notifyError === false) context.set(HTTP_NOTIFY_ERROR, false)
+        if (options?.skipAuth) context.set(HTTP_SKIP_AUTH, true)
 
         const params = options?.params
             ? new HttpParams({ fromObject: options.params as Record<string, string> })
