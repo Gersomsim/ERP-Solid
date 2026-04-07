@@ -9,4 +9,8 @@ export const routes: Routes = [
 		path: ':tenantSlug',
 		loadChildren: () => import('./pages/private/private.route').then(m => m.privateRoutes),
 	},
+	{
+		path: '**',
+		redirectTo: 'auth/login',
+	},
 ]

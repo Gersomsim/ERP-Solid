@@ -2,17 +2,10 @@ import { Component, computed, inject, signal } from '@angular/core'
 import { RouterLink, RouterLinkActive } from '@angular/router'
 
 import { AuthState } from '@core/auth'
+import { MenuService } from '@core/menu'
 import { ThemeService } from '@core/theme'
 
 import { Icon } from '../../atoms/icon/icon'
-import { IconType } from '../../atoms/icon/icon.type'
-
-export interface MenuItem {
-	icon: IconType
-	label: string
-	route: string
-	permission?: string
-}
 
 @Component({
 	selector: 'app-system-template',
@@ -22,6 +15,7 @@ export interface MenuItem {
 export class SystemTemplate {
 	protected theme = inject(ThemeService)
 	protected authState = inject(AuthState)
+	protected menu = inject(MenuService)
 
 	protected collapsed = signal(false)
 	protected userMenuOpen = signal(false)
@@ -32,19 +26,6 @@ export class SystemTemplate {
 	})
 
 	protected roleName = computed(() => this.authState.role()?.name ?? '—')
-
-	protected readonly menuItems: MenuItem[] = [
-		{ icon: 'house', label: 'Dashboard', route: 'dashboard' },
-		{ icon: 'shopping-cart', label: 'Ventas', route: 'sales', permission: 'sales.view' },
-		{ icon: 'users', label: 'Usuarios', route: 'users', permission: 'users.view' },
-		{ icon: 'settings', label: 'Configuración', route: 'settings', permission: 'settings.view' },
-	]
-
-	protected visibleItems = computed(() =>
-		this.menuItems.filter(
-			item => !item.permission || this.authState.hasPermission(item.permission),
-		),
-	)
 
 	protected toggleCollapse(): void {
 		this.collapsed.update(v => !v)

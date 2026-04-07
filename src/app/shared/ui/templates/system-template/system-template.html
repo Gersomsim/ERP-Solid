@@ -32,31 +32,52 @@
 
         <!-- Nav -->
         <nav class="flex-1 py-3 overflow-y-auto overflow-x-hidden">
-            <ul class="space-y-0.5 px-2">
-                @for (item of visibleItems(); track item.route) {
-                    <li>
-                        <a
-                            [routerLink]="item.route"
-                            routerLinkActive="!bg-primary-50 dark:!bg-primary-950/40
-                                             !text-primary-700 dark:!text-primary-300
-                                             font-semibold"
-                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm
-                                   font-medium text-surface-600 dark:text-surface-400
-                                   hover:bg-surface-100 dark:hover:bg-surface-800
-                                   hover:text-surface-900 dark:hover:text-surface-100
-                                   transition-colors duration-150"
-                            [title]="collapsed() ? item.label : ''"
+            @for (section of menu.visibleSections(); track section.title) {
+                <div class="mb-1">
+
+                    <!-- Cabecera de sección (solo cuando está expandido y tiene título) -->
+                    @if (section.title && !collapsed()) {
+                        <p
+                            class="px-4 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest
+                                   text-surface-400 dark:text-surface-600 whitespace-nowrap"
                         >
-                            <lib-ui-icon [icon]="item.icon" [size]="18" class="flex-shrink-0" />
-                            @if (!collapsed()) {
-                                <span class="whitespace-nowrap overflow-hidden">
-                                    {{ item.label }}
-                                </span>
-                            }
-                        </a>
-                    </li>
-                }
-            </ul>
+                            {{ section.title }}
+                        </p>
+                    }
+
+                    <!-- Separador cuando está colapsado y hay título (separa grupos visualmente) -->
+                    @if (section.title && collapsed()) {
+                        <div class="mx-3 my-2 border-t border-surface-100 dark:border-surface-800"></div>
+                    }
+
+                    <ul class="space-y-0.5 px-2">
+                        @for (item of section.items; track item.route) {
+                            <li>
+                                <a
+                                    [routerLink]="item.route"
+                                    routerLinkActive="!bg-primary-50 dark:!bg-primary-950/40
+                                                     !text-primary-700 dark:!text-primary-300
+                                                     font-semibold"
+                                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm
+                                           font-medium text-surface-600 dark:text-surface-400
+                                           hover:bg-surface-100 dark:hover:bg-surface-800
+                                           hover:text-surface-900 dark:hover:text-surface-100
+                                           transition-colors duration-150"
+                                    [title]="collapsed() ? item.label : ''"
+                                >
+                                    <lib-ui-icon [icon]="item.icon" [size]="18" class="flex-shrink-0" />
+                                    @if (!collapsed()) {
+                                        <span class="whitespace-nowrap overflow-hidden">
+                                            {{ item.label }}
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+            }
         </nav>
 
         <!-- Botón colapsar -->
