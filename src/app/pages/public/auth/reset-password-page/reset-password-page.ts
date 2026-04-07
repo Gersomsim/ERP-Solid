@@ -12,11 +12,11 @@ import { Icon } from '@ui/atoms/icon/icon'
 
 import { ResetPasswordUseCase, ValidateTokenUseCase } from '@features/users/auth/app'
 import { AuthTokenProvider } from '@features/users/auth/infra'
-import { RegisterForm } from '@features/users/auth/presentation'
+import { ResetPasswordForm } from '@features/users/auth/presentation'
 
 @Component({
 	selector: 'app-reset-password-page',
-	imports: [RouterLink, Button, Icon, RegisterForm],
+	imports: [RouterLink, Button, Icon, ResetPasswordForm],
 	templateUrl: './reset-password-page.html',
 	providers: [ValidateTokenUseCase, AuthTokenProvider, ResetPasswordUseCase],
 })
