@@ -1,5 +1,7 @@
 import { Routes } from '@angular/router'
 
+import { authGuard } from '@core/guards'
+
 export const routes: Routes = [
 	{
 		path: '',
@@ -8,6 +10,7 @@ export const routes: Routes = [
 	{
 		path: ':tenantSlug',
 		loadChildren: () => import('./pages/private/private.route').then(m => m.privateRoutes),
+		canActivate: [authGuard],
 	},
 	{
 		path: '**',
