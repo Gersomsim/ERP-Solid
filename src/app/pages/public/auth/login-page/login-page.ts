@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core'
-import { RouterLink } from '@angular/router'
+import { Router, RouterLink } from '@angular/router'
 
 import { AuthState } from '@core/auth/auth.state'
 
@@ -14,6 +14,7 @@ import { LoginForm } from '@features/users/auth/presentation'
 	providers: [LoginUseCase, AuthTokenProvider],
 })
 export class LoginPage {
+	private readonly router = inject(Router)
 	private readonly loginUseCase = inject(LoginUseCase)
 	private readonly authState = inject(AuthState)
 
@@ -24,6 +25,8 @@ export class LoginPage {
 		try {
 			const auth = await this.loginUseCase.execute(login.email, login.password)
 			this.authState.setAuth(auth)
+
+			this.router.navigate(['/load-data'])
 		} catch (error) {
 		} finally {
 			this.loading.set(false)
