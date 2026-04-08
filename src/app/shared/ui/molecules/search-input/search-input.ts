@@ -1,40 +1,58 @@
-import { Component, OnDestroy, OnInit, output, input } from '@angular/core'
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs'
+import { Component, OnDestroy, OnInit, effect, inject, input } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
+import { ActivatedRoute, Router } from '@angular/router'
+
+import { Subject, debounceTime, distinctUntilChanged, map } from 'rxjs'
 
 import { Icon } from '../../atoms/icon/icon'
 
 @Component({
-    selector: 'lib-ui-search-input',
-    imports: [Icon],
-    templateUrl: './search-input.html',
+	selector: 'lib-ui-search-input',
+	imports: [Icon],
+	templateUrl: './search-input.html',
 })
 export class SearchInput implements OnInit, OnDestroy {
-    placeholder = input<string>('Buscar...')
-    debounceMs = input<number>(300)
+	private readonly router = inject(Router)
+	private readonly route = inject(ActivatedRoute)
 
-    search = output<string>()
+	placeholder = input<string>('Buscar...')
+	debounceMs = input<number>(300)
 
-    protected value = ''
-    private input$ = new Subject<string>()
+	protected value = ''
+	private input$ = new Subject<string>()
+	private readonly search = toSignal(this.route.queryParamMap.pipe(map(params => params.get('search'))))
 
-    ngOnInit(): void {
-        this.input$
-            .pipe(debounceTime(this.debounceMs()), distinctUntilChanged())
-            .subscribe(term => this.search.emit(term))
-    }
+	constructor() {
+		effect(() => {
+			const search = this.search() ?? ''
+			this.value = search
+			this.input$.next(search)
+		})
+	}
 
-    ngOnDestroy(): void {
-        this.input$.complete()
-    }
+	ngOnInit(): void {
+		this.input$
+			.pipe(debounceTime(this.debounceMs()), distinctUntilChanged())
+			.subscribe(term => this.searchByQuery(term))
+	}
 
-    protected onInput(event: Event): void {
-        const value = (event.target as HTMLInputElement).value
-        this.value = value
-        this.input$.next(value)
-    }
+	ngOnDestroy(): void {
+		this.input$.complete()
+	}
 
-    protected clear(): void {
-        this.value = ''
-        this.input$.next('')
-    }
+	searchByQuery(param: string) {
+		const search = param.length > 0 ? param : null
+		this.router.navigate([], { queryParams: { search }, queryParamsHandling: 'merge' })
+	}
+
+	protected onInput(event: Event): void {
+		const value = (event.target as HTMLInputElement).value
+		this.value = value
+		this.input$.next(value)
+	}
+
+	protected clear(): void {
+		this.value = ''
+		this.input$.next('')
+	}
 }
