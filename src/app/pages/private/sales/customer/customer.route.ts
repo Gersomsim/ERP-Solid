@@ -15,11 +15,11 @@ export const CustomerRoutes: Route[] = [
 		component: CustomerCretePage,
 	},
 	{
-		path: 'edit',
+		path: 'edit/:id',
 		component: CustomerEditPage,
 	},
 	{
-		path: 'detail',
+		path: 'detail/:id',
 		component: CustomerDetailPage,
 	},
 	{

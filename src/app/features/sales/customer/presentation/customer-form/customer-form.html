@@ -1,0 +1,144 @@
+<form novalidate [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-8">
+
+    <!-- ── Sección: Información general ─────────────────────────── -->
+    <section class="flex flex-col gap-5">
+        <div>
+            <h2 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
+                Información general
+            </h2>
+            <p class="mt-0.5 text-xs text-surface-400 dark:text-surface-500">
+                Datos de identificación del cliente.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <!-- Nombre (ancho completo) -->
+            <div class="sm:col-span-2">
+                <lib-ui-input
+                    label="Nombre o razón social"
+                    placeholder="Constructora del Norte SA"
+                    prefixIcon="building"
+                    formControlName="name"
+                />
+            </div>
+
+            <!-- RFC / Tax ID -->
+            <lib-ui-input
+                label="RFC / Tax ID"
+                placeholder="CNO-980123-AB1"
+                prefixIcon="tag"
+                formControlName="taxId"
+            />
+
+            <!-- Límite de crédito -->
+            <lib-ui-input
+                label="Límite de crédito"
+                type="number"
+                placeholder="0.00"
+                prefixIcon="credit-card"
+                hint="Monto máximo autorizado en crédito"
+                formControlName="creditLimit"
+            />
+        </div>
+    </section>
+
+    <div class="border-t border-surface-100 dark:border-surface-800"></div>
+
+    <!-- ── Sección: Contacto ─────────────────────────────────────── -->
+    <section class="flex flex-col gap-5">
+        <div>
+            <h2 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
+                Contacto
+            </h2>
+            <p class="mt-0.5 text-xs text-surface-400 dark:text-surface-500">
+                Información de contacto opcional.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <lib-ui-input
+                label="Correo electrónico"
+                type="email"
+                placeholder="contacto@empresa.com"
+                prefixIcon="mail"
+                formControlName="email"
+            />
+
+            <lib-ui-input
+                label="Teléfono"
+                type="tel"
+                placeholder="555-123-4567"
+                formControlName="phone"
+            />
+        </div>
+    </section>
+
+    <div class="border-t border-surface-100 dark:border-surface-800"></div>
+
+    <!-- ── Sección: Dirección ────────────────────────────────────── -->
+    <section class="flex flex-col gap-5">
+        <div>
+            <h2 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
+                Dirección
+            </h2>
+            <p class="mt-0.5 text-xs text-surface-400 dark:text-surface-500">
+                Datos de ubicación del cliente.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <!-- Calle y número (ancho completo) -->
+            <div class="sm:col-span-2">
+                <lib-ui-input
+                    label="Calle y número"
+                    placeholder="Av. Industrial 45"
+                    prefixIcon="map-pin"
+                    formControlName="address"
+                />
+            </div>
+
+            <lib-ui-input
+                label="Ciudad"
+                placeholder="Monterrey"
+                formControlName="city"
+            />
+
+            <lib-ui-input
+                label="Estado"
+                placeholder="Nuevo León"
+                formControlName="state"
+            />
+
+            <lib-ui-input
+                label="Código postal"
+                placeholder="64000"
+                formControlName="zip"
+            />
+
+            <lib-ui-input
+                label="País"
+                placeholder="México"
+                formControlName="country"
+            />
+        </div>
+    </section>
+
+    <!-- ── Acciones ──────────────────────────────────────────────── -->
+    <div class="flex items-center justify-end gap-3 pt-2">
+        <lib-ui-button
+            type="button"
+            variant="secondary"
+            (click)="cancel.emit()"
+        >
+            Cancelar
+        </lib-ui-button>
+
+        <lib-ui-button
+            type="submit"
+            [loading]="loading()"
+        >
+            Guardar cliente
+        </lib-ui-button>
+    </div>
+
+</form>

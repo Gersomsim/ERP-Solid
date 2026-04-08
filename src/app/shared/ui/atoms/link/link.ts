@@ -23,11 +23,7 @@ export class Link {
 	disabled = input<boolean>(false)
 	loading = input<boolean>(false)
 
-	/** Ruta interna — renderiza como <a [routerLink]> */
 	link = input<string | string[] | null>(null)
-	/** URL externa — renderiza como <a href> */
-	href = input<string | null>(null)
-	target = input<string>('_self')
 
 	protected iconSize = computed<number>(() => ({ sm: 14, md: 16, lg: 18 })[this.size()])
 
