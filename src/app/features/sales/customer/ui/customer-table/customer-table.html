@@ -55,12 +55,7 @@
                         <!-- Nombre -->
                         <td class="px-4 py-3">
                             <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/40
-                                            flex items-center justify-center flex-shrink-0">
-                                    <span class="text-xs font-semibold text-primary-700 dark:text-primary-400">
-                                        {{ customer.name.charAt(0).toUpperCase() }}
-                                    </span>
-                                </div>
+                                <lib-ui-avatar [name]="customer.name" />
                                 <div class="min-w-0">
                                     <p class="font-medium text-surface-900 dark:text-surface-100 truncate">
                                         {{ customer.name }}

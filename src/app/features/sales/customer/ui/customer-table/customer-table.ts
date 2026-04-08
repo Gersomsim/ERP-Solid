@@ -1,12 +1,13 @@
 import { Component, input, output } from '@angular/core'
 import { DecimalPipe } from '@angular/common'
 
+import { Avatar } from '@ui/atoms/avatar/avatar'
 import { Icon } from '@ui/atoms/icon/icon'
 import { Customer } from '../../domain/customer.model'
 
 @Component({
     selector: 'app-customer-table',
-    imports: [Icon, DecimalPipe],
+    imports: [Avatar, DecimalPipe, Icon],
     templateUrl: './customer-table.html',
 })
 export class CustomerTable {
