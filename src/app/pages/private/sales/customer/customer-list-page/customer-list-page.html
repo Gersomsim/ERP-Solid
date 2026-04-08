@@ -1,5 +1,6 @@
 <lib-ui-main-container>
 	<div class="space-y-5">
+
 		<!-- ── Encabezado de página ───────────────────────────────────── -->
 		<div class="flex items-start justify-between gap-4">
 			<lib-ui-page-title>
@@ -21,22 +22,24 @@
 			</lib-ui-link>
 		</div>
 
-		<!-- ── Barra de herramientas ──────────────────────────────────── -->
-		<div class="flex items-center gap-3">
-			<div class="flex-1 max-w-sm">
-				<lib-ui-search-input placeholder="Buscar por nombre, RFC o ciudad..." />
-			</div>
-		</div>
-
 		<!-- ── Tabla ──────────────────────────────────────────────────── -->
-		<div class="mb-4">
+		<lib-ui-card padding="none">
+			<lib-ui-card-header>
+				<div class="flex-1 max-w-sm">
+					<lib-ui-search-input placeholder="Buscar por nombre, RFC o ciudad..." />
+				</div>
+				<span class="text-xs text-surface-500 dark:text-surface-400">
+					{{ total() }} resultado{{ total() !== 1 ? 's' : '' }}
+				</span>
+			</lib-ui-card-header>
+
 			<app-customer-table
 				[customers]="pagedCustomers()"
 				[loading]="false"
 				(view)="onView($event)"
 				(edit)="onEdit($event)"
 			/>
-		</div>
+		</lib-ui-card>
 
 		<!-- ── Paginación ─────────────────────────────────────────────── -->
 		@if (total() > 0) {

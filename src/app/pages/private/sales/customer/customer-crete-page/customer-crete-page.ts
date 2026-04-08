@@ -1,16 +1,15 @@
-import { Component, signal } from '@angular/core'
+import { Component, inject, signal } from '@angular/core'
 import { Router } from '@angular/router'
-import { inject } from '@angular/core'
 
+import { Card, Link, PageTitle } from '@ui/atoms'
 import { Icon } from '@ui/atoms/icon/icon'
-import { Link, PageTitle } from '@ui/atoms'
 import { MainContainer } from '@ui/templates/main-container/main-container'
 
 import { CustomerForm, CustomerFormValue } from '@features/sales/customer/presentation/customer-form/customer-form'
 
 @Component({
     selector: 'app-customer-crete-page',
-    imports: [Link, Icon, PageTitle, CustomerForm, MainContainer],
+    imports: [Card, Link, Icon, PageTitle, CustomerForm, MainContainer],
     templateUrl: './customer-crete-page.html',
 })
 export class CustomerCretePage {

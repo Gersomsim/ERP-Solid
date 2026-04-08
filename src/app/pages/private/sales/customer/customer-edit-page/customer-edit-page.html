@@ -21,10 +21,8 @@
 			</lib-ui-page-title>
 		</div>
 
-		<!-- ── Card con formulario ───────────────────────────────────── -->
-		<div
-			class="rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 p-6 shadow-sm"
-		>
+		<!-- ── Formulario ───────────────────────────────────────────── -->
+		<lib-ui-card padding="lg">
 			@if (customer()) {
 				<app-customer-form
 					[initialValue]="initialValue()"
@@ -41,6 +39,6 @@
 					<p class="text-sm font-medium">Cliente no encontrado</p>
 				</div>
 			}
-		</div>
+		</lib-ui-card>
 	</div>
 </lib-ui-main-container>

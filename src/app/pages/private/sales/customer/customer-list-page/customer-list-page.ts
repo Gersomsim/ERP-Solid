@@ -1,7 +1,10 @@
-import { Component, computed, inject, signal } from '@angular/core'
+import { Component, computed, effect, inject, signal } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router } from '@angular/router'
 
-import { Link, PageTitle } from '@ui/atoms'
+import { map } from 'rxjs'
+
+import { Card, CardHeader, Link, PageTitle } from '@ui/atoms'
 import { Icon } from '@ui/atoms/icon/icon'
 import { Paginator } from '@ui/molecules/paginator/paginator'
 import { SearchInput } from '@ui/molecules/search-input/search-input'
@@ -183,16 +186,31 @@ const MOCK_CUSTOMERS: Customer[] = [
 
 @Component({
 	selector: 'app-customer-list-page',
-	imports: [Icon, SearchInput, Paginator, CustomerTable, Link, MainContainer, PageTitle],
+	imports: [Card, CardHeader, Icon, SearchInput, Paginator, CustomerTable, Link, MainContainer, PageTitle],
 	templateUrl: './customer-list-page.html',
 })
 export class CustomerListPage {
-	private router = inject(Router)
+	private readonly router = inject(Router)
 	private readonly route = inject(ActivatedRoute)
 
-	protected searchTerm = signal('')
+	protected readonly searchTerm = toSignal(
+		this.route.queryParamMap.pipe(map(p => p.get('search') ?? '')),
+		{ initialValue: '' },
+	)
+
 	protected page = signal(1)
 	protected readonly pageSize = 5
+
+	constructor() {
+		// Resetear a página 1 cada vez que cambia el término de búsqueda
+		effect(
+			() => {
+				this.searchTerm()
+				this.page.set(1)
+			},
+			{ allowSignalWrites: true },
+		)
+	}
 
 	protected filteredCustomers = computed(() => {
 		const term = this.searchTerm().toLowerCase()
@@ -212,11 +230,6 @@ export class CustomerListPage {
 		const start = (this.page() - 1) * this.pageSize
 		return this.filteredCustomers().slice(start, start + this.pageSize)
 	})
-
-	protected onSearch(term: string): void {
-		this.searchTerm.set(term)
-		this.page.set(1)
-	}
 
 	protected onPageChange(page: number): void {
 		this.page.set(page)

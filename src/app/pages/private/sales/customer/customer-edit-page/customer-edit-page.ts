@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router'
 
 import { map } from 'rxjs'
 
-import { Link, PageTitle } from '@ui/atoms'
+import { Card, Link, PageTitle } from '@ui/atoms'
 import { Icon } from '@ui/atoms/icon/icon'
 import { MainContainer } from '@ui/templates/main-container/main-container'
 
@@ -59,7 +59,7 @@ const MOCK_CUSTOMERS: Customer[] = [
 
 @Component({
 	selector: 'app-customer-edit-page',
-	imports: [Link, Icon, PageTitle, CustomerForm, MainContainer],
+	imports: [Card, Link, Icon, PageTitle, CustomerForm, MainContainer],
 	templateUrl: './customer-edit-page.html',
 })
 export class CustomerEditPage {
