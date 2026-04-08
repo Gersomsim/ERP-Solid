@@ -1,5 +1,4 @@
-export interface SalePayment {
-	id: string
+export interface CreateSalePaymentDto {
 	saleId: string
 	amount: number
 	date: Date
