@@ -1,8 +1,6 @@
 import { SaleStatus } from './sale-status.enum'
 
-export interface Sale {
-	id: string
-	tenantId: string
+export interface CreateSaleDto {
 	customerId: string
 	saleAgentId: string
 	folio: string
