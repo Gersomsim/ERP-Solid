@@ -1,7 +1,5 @@
-export interface ProductSaleData {
-	id: string
+export interface CreateProductSaleDataDto {
 	productId: string
-	tenantId: string
 	price: number
 	taxType: string
 	isAvailableForSale: boolean
