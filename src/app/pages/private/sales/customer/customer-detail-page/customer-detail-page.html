@@ -1,1 +1,325 @@
-<p>customer-detail-page works!</p>
+<lib-ui-main-container>
+	<div class="space-y-6">
+
+		<!-- ── Header ─────────────────────────────────────────────────────── -->
+		<div class="flex items-center justify-between gap-4">
+			<div class="flex items-center gap-3">
+				<lib-ui-link
+					link="../../list"
+					variant="ghost"
+					size="sm"
+				>
+					<lib-ui-icon
+						icon="arrow-left"
+						[size]="15"
+					/>
+				</lib-ui-link>
+				@if (customer()) {
+					<lib-ui-page-title>
+						{{ customer()!.name }}
+						<span subtitle>RFC: {{ customer()!.taxId }}</span>
+					</lib-ui-page-title>
+				} @else {
+					<lib-ui-page-title>Cliente</lib-ui-page-title>
+				}
+			</div>
+
+			<button
+				(click)="onEdit()"
+				class="inline-flex items-center gap-2 rounded-lg border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800 px-4 py-2 text-sm font-medium text-surface-700 dark:text-surface-300 shadow-sm hover:bg-surface-50 dark:hover:bg-surface-700 transition-colors"
+			>
+				<lib-ui-icon
+					icon="user-pen"
+					[size]="15"
+				/>
+				Editar cliente
+			</button>
+		</div>
+
+		@if (customer(); as c) {
+
+			<!-- ── Tarjeta de información ──────────────────────────────────── -->
+			<!-- Escenario: acento superior + cuerpo con padding lg -->
+			<lib-ui-card padding="lg">
+				<div
+					card-accent
+					class="h-1 bg-gradient-to-r from-primary-600 via-primary-500 to-primary-300"
+				></div>
+
+				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+					<!-- Avatar + nombre + contacto -->
+					<div class="flex items-start gap-5 md:col-span-2">
+						<lib-ui-avatar
+							[name]="c.name"
+							size="xl"
+						/>
+
+						<div class="min-w-0 flex-1">
+							<h2 class="text-xl font-semibold text-surface-900 dark:text-surface-50 truncate">
+								{{ c.name }}
+							</h2>
+							<p class="mt-0.5 text-sm font-mono text-surface-400 dark:text-surface-500">
+								{{ c.taxId }}
+							</p>
+
+							<div class="flex flex-wrap gap-x-5 gap-y-1.5 mt-3">
+								@if (c.email) {
+									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+										<lib-ui-icon
+											icon="mail"
+											[size]="12"
+											class="text-surface-400 dark:text-surface-500 shrink-0"
+										/>
+										{{ c.email }}
+									</span>
+								}
+								@if (c.phone) {
+									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+										<lib-ui-icon
+											icon="info"
+											[size]="12"
+											class="text-surface-400 dark:text-surface-500 shrink-0"
+										/>
+										{{ c.phone }}
+									</span>
+								}
+								@if (c.city) {
+									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+										<lib-ui-icon
+											icon="map-pin"
+											[size]="12"
+											class="text-surface-400 dark:text-surface-500 shrink-0"
+										/>
+										{{ c.city }}, {{ c.state }}
+									</span>
+								}
+								@if (c.address) {
+									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+										<lib-ui-icon
+											icon="building"
+											[size]="12"
+											class="text-surface-400 dark:text-surface-500 shrink-0"
+										/>
+										{{ c.address }}
+									</span>
+								}
+							</div>
+						</div>
+					</div>
+
+					<!-- Panel de crédito -->
+					<div
+						class="border-t md:border-t-0 md:border-l border-surface-100 dark:border-surface-700/50 pt-5 md:pt-0 md:pl-6 flex flex-col gap-4"
+					>
+						<div>
+							<p class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wide">
+								Línea de crédito
+							</p>
+							<p class="mt-1 text-2xl font-bold text-surface-900 dark:text-surface-50 tabular-nums">
+								{{ c.creditLimit | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }}
+							</p>
+						</div>
+
+						<div class="space-y-1.5">
+							<div class="flex items-center justify-between text-xs">
+								<span class="text-surface-500 dark:text-surface-400">
+									{{ creditUsedPercent() | number: '1.0-0' }}% utilizado
+								</span>
+								<span class="font-medium text-surface-700 dark:text-surface-300">
+									{{ creditAvailable() | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }} disponible
+								</span>
+							</div>
+
+							<div class="h-2 rounded-full bg-surface-100 dark:bg-surface-700 overflow-hidden">
+								<div
+									class="h-full rounded-full transition-all duration-700 ease-out"
+									[style.width.%]="creditUsedPercent()"
+									[ngClass]="creditBarClass()"
+								></div>
+							</div>
+
+							<div class="flex items-center justify-between text-xs text-surface-500 dark:text-surface-500">
+								<span>
+									{{ pendingAmount() | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }} pendiente
+								</span>
+								@if (overdueAmount() > 0) {
+									<span class="text-danger-600 dark:text-danger-400 font-medium">
+										{{ overdueAmount() | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }} vencido
+									</span>
+								}
+							</div>
+						</div>
+					</div>
+				</div>
+			</lib-ui-card>
+
+			<!-- ── KPIs ────────────────────────────────────────────────────── -->
+			<!-- Escenario: StatCard usa Card internamente con padding md -->
+			<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+				<lib-ui-stat-card
+					icon="chart-area"
+					variant="primary"
+					[value]="totalRevenueFormatted()"
+					label="Total facturado (cobrado)"
+				/>
+				<lib-ui-stat-card
+					icon="clock"
+					variant="default"
+					[value]="pendingAmountFormatted()"
+					label="Facturas por cobrar"
+				/>
+				<lib-ui-stat-card
+					icon="triangle-alert"
+					variant="danger"
+					[value]="overdueAmountFormatted()"
+					label="Importe vencido"
+					[accentValue]="overdueAmount() > 0"
+				/>
+				<lib-ui-stat-card
+					icon="shopping-cart"
+					variant="success"
+					[value]="totalOrders.toString()"
+					label="Ventas registradas"
+				/>
+			</div>
+
+			<!-- ── Tabla + gráfica ─────────────────────────────────────────── -->
+			<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+				<!-- Historial de ventas (2/3) -->
+				<!-- Escenario: header con border-b + contenido edge-to-edge -->
+				<lib-ui-card
+					class="lg:col-span-2"
+					padding="none"
+				>
+					<lib-ui-card-header>
+						<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
+							Historial de ventas
+						</h3>
+						<span class="text-xs text-surface-500 dark:text-surface-400">
+							{{ sales.length }} registros
+						</span>
+					</lib-ui-card-header>
+
+					<lib-ui-data-table
+						[columns]="salesColumns()"
+						[rows]="sales"
+						trackByKey="id"
+						emptyIcon="shopping-cart"
+						emptyMessage="Sin ventas registradas"
+					/>
+
+					<ng-template
+						#statusCell
+						let-sale
+					>
+						<lib-ui-badge [variant]="statusConfig(sale.status).variant">
+							{{ statusConfig(sale.status).label }}
+						</lib-ui-badge>
+					</ng-template>
+				</lib-ui-card>
+
+				<!-- Columna derecha (1/3) -->
+				<div class="space-y-4">
+
+					<!-- Gráfica de ingresos -->
+					<!-- Escenario: solo cuerpo con padding, título integrado sin separador -->
+					<lib-ui-card>
+						<div class="flex items-center justify-between">
+							<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
+								Ingresos 2024
+							</h3>
+							<lib-ui-icon
+								icon="chart-area"
+								[size]="14"
+								class="text-primary-500 dark:text-primary-400"
+							/>
+						</div>
+						<p class="mt-1 text-xl font-bold text-surface-900 dark:text-surface-50 tabular-nums">
+							{{ totalRevenue() | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }}
+						</p>
+						<div class="mt-4">
+							<lib-ui-chart
+								type="area"
+								[data]="revenueChartData"
+								[height]="120"
+							/>
+						</div>
+					</lib-ui-card>
+
+					<!-- Resumen por estado -->
+					<!-- Escenario: header con border-b + lista edge-to-edge -->
+					<lib-ui-card padding="none">
+						<lib-ui-card-header>
+							<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
+								Resumen de facturas
+							</h3>
+						</lib-ui-card-header>
+
+						<div class="divide-y divide-surface-100 dark:divide-surface-700/60">
+							<div class="px-5 py-3 flex items-center justify-between">
+								<div class="flex items-center gap-2.5">
+									<span class="w-2 h-2 rounded-full bg-success-500 shrink-0"></span>
+									<span class="text-xs text-surface-600 dark:text-surface-400">Pagadas</span>
+								</div>
+								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
+									{{ saleCountByStatus.paid }}
+								</span>
+							</div>
+
+							<div class="px-5 py-3 flex items-center justify-between">
+								<div class="flex items-center gap-2.5">
+									<span class="w-2 h-2 rounded-full bg-primary-500 shrink-0"></span>
+									<span class="text-xs text-surface-600 dark:text-surface-400">Pendientes</span>
+								</div>
+								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
+									{{ saleCountByStatus.pending }}
+								</span>
+							</div>
+
+							<div class="px-5 py-3 flex items-center justify-between">
+								<div class="flex items-center gap-2.5">
+									<span class="w-2 h-2 rounded-full bg-danger-500 shrink-0"></span>
+									<span class="text-xs text-surface-600 dark:text-surface-400">Vencidas</span>
+								</div>
+								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
+									{{ saleCountByStatus.overdue }}
+								</span>
+							</div>
+
+							<div class="px-5 py-3 flex items-center justify-between">
+								<div class="flex items-center gap-2.5">
+									<span class="w-2 h-2 rounded-full bg-surface-300 dark:bg-surface-600 shrink-0"></span>
+									<span class="text-xs text-surface-600 dark:text-surface-400">Canceladas</span>
+								</div>
+								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
+									{{ saleCountByStatus.cancelled }}
+								</span>
+							</div>
+						</div>
+					</lib-ui-card>
+				</div>
+			</div>
+
+		} @else {
+
+			<!-- Estado vacío / no encontrado -->
+			<div class="flex flex-col items-center gap-3 py-24 text-surface-400 dark:text-surface-500">
+				<lib-ui-icon
+					icon="users"
+					[size]="40"
+				/>
+				<p class="text-sm font-medium">Cliente no encontrado</p>
+				<lib-ui-link
+					link="../../list"
+					variant="ghost"
+					size="sm"
+				>
+					Volver al listado
+				</lib-ui-link>
+			</div>
+
+		}
+	</div>
+</lib-ui-main-container>
