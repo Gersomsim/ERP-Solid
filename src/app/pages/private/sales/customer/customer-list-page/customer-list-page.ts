@@ -1,10 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core'
-import { Router } from '@angular/router'
+import { ActivatedRoute, Router } from '@angular/router'
 
-import { Link } from '@ui/atoms'
+import { Link, PageTitle } from '@ui/atoms'
 import { Icon } from '@ui/atoms/icon/icon'
 import { Paginator } from '@ui/molecules/paginator/paginator'
 import { SearchInput } from '@ui/molecules/search-input/search-input'
+import { MainContainer } from '@ui/templates/main-container/main-container'
 
 import { Customer } from '@features/sales/customer/domain/customer.model'
 import { CustomerTable } from '@features/sales/customer/ui/customer-table/customer-table'
@@ -42,7 +43,7 @@ const MOCK_CUSTOMERS: Customer[] = [
 		id: '3',
 		name: 'Grupo Industrial Alfa',
 		taxId: 'GIA-650301-EF3',
-		email: null,
+		email: '',
 		phone: '555-3003',
 		address: 'Calz. Obrera 88',
 		city: 'CDMX',
@@ -57,8 +58,8 @@ const MOCK_CUSTOMERS: Customer[] = [
 		name: 'Servicios Logísticos Beta',
 		taxId: 'SLB-890615-GH4',
 		email: 'ops@beta.mx',
-		phone: null,
-		address: null,
+		phone: '',
+		address: '',
 		city: 'Puebla',
 		state: 'PUE',
 		zip: '72000',
@@ -126,7 +127,7 @@ const MOCK_CUSTOMERS: Customer[] = [
 		id: '9',
 		name: 'Maquinaria Eta',
 		taxId: 'MAE-680310-QR9',
-		email: null,
+		email: '',
 		phone: '555-9009',
 		address: 'Av. Maquinaria 5',
 		city: 'Saltillo',
@@ -182,11 +183,12 @@ const MOCK_CUSTOMERS: Customer[] = [
 
 @Component({
 	selector: 'app-customer-list-page',
-	imports: [Icon, SearchInput, Paginator, CustomerTable, Link],
+	imports: [Icon, SearchInput, Paginator, CustomerTable, Link, MainContainer, PageTitle],
 	templateUrl: './customer-list-page.html',
 })
 export class CustomerListPage {
 	private router = inject(Router)
+	private readonly route = inject(ActivatedRoute)
 
 	protected searchTerm = signal('')
 	protected page = signal(1)
@@ -221,15 +223,10 @@ export class CustomerListPage {
 	}
 
 	protected onView(customer: Customer): void {
-		this.router.navigate(['/private/sales/customer/detail'], { queryParams: { id: customer.id } })
+		this.router.navigate(['../detail', customer.id], { relativeTo: this.route })
 	}
 
 	protected onEdit(customer: Customer): void {
-		this.router.navigate(['/private/sales/customer/edit'], { queryParams: { id: customer.id } })
-	}
-
-	protected onDelete(customer: Customer): void {
-		// TODO: confirmar y llamar al use case de eliminación
-		console.log('delete', customer.id)
+		this.router.navigate(['../edit', customer.id], { relativeTo: this.route })
 	}
 }
