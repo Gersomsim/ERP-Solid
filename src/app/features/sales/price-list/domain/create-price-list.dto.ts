@@ -1,4 +1,4 @@
-export interface PriceList {
+export interface CreatePriceListDto {
 	id: string
 	name: string
 	tenantId: string

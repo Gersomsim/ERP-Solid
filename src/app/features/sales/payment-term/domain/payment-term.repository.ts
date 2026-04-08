@@ -1,4 +1,4 @@
-import { CreatePaymentTermDto } from './create-payment-term.model'
+import { CreatePaymentTermDto } from './create-payment-term.dto'
 import { PaymentTerm } from './payment-term.model'
 
 export interface PaymentTermRepository {
