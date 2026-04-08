@@ -1,6 +1,4 @@
-export interface PaymentTerm {
-	id: string
-	tenantId: string
+export interface CreatePaymentTermDto {
 	name: string
 	days: number
 	description: string
