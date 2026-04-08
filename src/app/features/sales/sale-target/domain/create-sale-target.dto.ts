@@ -1,8 +1,6 @@
-export interface SaleTarget {
-	id: string
+export interface CreateSaleTargetDto {
 	agentId: string
 	tenantId: string
-	periodFrom: Date
 	periodTo: Date
 	targetAmount: number
 }
