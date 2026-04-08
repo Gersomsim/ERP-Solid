@@ -8,7 +8,7 @@ import { SearchInput } from '@ui/molecules/search-input/search-input'
 import { MainContainer } from '@ui/templates/main-container/main-container'
 
 import { Customer } from '@features/sales/customer/domain/customer.model'
-import { CustomerTable } from '@features/sales/customer/ui/customer-table/customer-table'
+import { CustomerTable } from '@features/sales/customer/presentation/customer-table/customer-table'
 
 const MOCK_CUSTOMERS: Customer[] = [
 	{
