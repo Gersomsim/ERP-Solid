@@ -1,5 +1,4 @@
-export interface PriceListItem {
-	id: string
+export interface CreatePriceListItemDto {
 	priceListId: string
 	productSaleDataId: string
 	price: number
