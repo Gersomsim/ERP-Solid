@@ -7,8 +7,7 @@ import { map } from 'rxjs'
 import { ProcessLoaderService } from '@core/process-loader'
 import { AppError } from '@core/utils'
 
-import { Button } from '@ui/atoms/button/button'
-import { Icon } from '@ui/atoms/icon/icon'
+import { Button, Icon, Link } from '@ui/atoms'
 
 import { ResetPasswordUseCase, ValidateTokenUseCase } from '@features/users/auth/app'
 import { AuthTokenProvider } from '@features/users/auth/infra'
@@ -16,7 +15,7 @@ import { ResetPasswordForm } from '@features/users/auth/presentation'
 
 @Component({
 	selector: 'app-reset-password-page',
-	imports: [RouterLink, Button, Icon, ResetPasswordForm],
+	imports: [RouterLink, Link, Button, Icon, ResetPasswordForm],
 	templateUrl: './reset-password-page.html',
 	providers: [ValidateTokenUseCase, AuthTokenProvider, ResetPasswordUseCase],
 })

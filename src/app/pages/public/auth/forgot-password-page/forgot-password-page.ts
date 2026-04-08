@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core'
 import { RouterLink } from '@angular/router'
 
-import { Button, Icon } from '@ui/atoms'
+import { Button, Icon, Link } from '@ui/atoms'
 
 import { ForgotPasswordUseCase } from '@features/users/auth/app'
 import { AuthTokenProvider } from '@features/users/auth/infra'
@@ -9,7 +9,7 @@ import { ForgotPasswordForm } from '@features/users/auth/presentation'
 
 @Component({
 	selector: 'app-forgot-password-page',
-	imports: [RouterLink, Button, Icon, ForgotPasswordForm],
+	imports: [RouterLink, Link, Button, Icon, ForgotPasswordForm],
 	templateUrl: './forgot-password-page.html',
 	providers: [ForgotPasswordUseCase, AuthTokenProvider],
 })

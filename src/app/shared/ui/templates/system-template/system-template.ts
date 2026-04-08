@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core'
-import { RouterLink, RouterLinkActive } from '@angular/router'
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'
 
 import { AuthState } from '@core/auth'
 import { MenuService } from '@core/menu'
@@ -9,7 +9,7 @@ import { Icon } from '../../atoms/icon/icon'
 
 @Component({
 	selector: 'app-system-template',
-	imports: [Icon, RouterLink, RouterLinkActive],
+	imports: [Icon, RouterLink, RouterLinkActive, RouterOutlet],
 	templateUrl: './system-template.html',
 })
 export class SystemTemplate {

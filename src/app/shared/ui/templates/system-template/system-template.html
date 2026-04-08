@@ -1,252 +1,213 @@
 <div class="flex h-screen bg-surface-50 dark:bg-surface-950 overflow-hidden transition-colors duration-200">
+	<!-- ── Aside · Menú lateral ──────────────────────────────────────── -->
+	<aside
+		class="flex flex-col bg-white dark:bg-surface-900 border-r border-surface-200 dark:border-surface-800 flex-shrink-0 transition-all duration-300 ease-in-out"
+		[class.w-64]="!collapsed()"
+		[class.w-16]="collapsed()"
+	>
+		<!-- Logo -->
+		<div
+			class="flex items-center gap-3 px-4 border-b border-surface-100 dark:border-surface-800 h-16 overflow-hidden flex-shrink-0"
+		>
+			<div class="w-8 h-8 rounded-lg bg-primary-700 flex items-center justify-center flex-shrink-0">
+				<lib-ui-icon
+					icon="building"
+					[size]="16"
+					class="text-white"
+				/>
+			</div>
 
-    <!-- ── Aside · Menú lateral ──────────────────────────────────────── -->
-    <aside
-        class="flex flex-col bg-white dark:bg-surface-900 border-r border-surface-200
-               dark:border-surface-800 flex-shrink-0 transition-all duration-300 ease-in-out"
-        [class.w-64]="!collapsed()"
-        [class.w-16]="collapsed()"
-    >
+			@if (!collapsed()) {
+				<span
+					class="text-surface-900 dark:text-surface-50 font-semibold text-base tracking-tight whitespace-nowrap"
+				>
+					ERP Solid
+				</span>
+			}
+		</div>
 
-        <!-- Logo -->
-        <div
-            class="flex items-center gap-3 px-4 border-b border-surface-100
-                   dark:border-surface-800 h-16 overflow-hidden flex-shrink-0"
-        >
-            <div
-                class="w-8 h-8 rounded-lg bg-primary-700 flex items-center justify-center
-                       flex-shrink-0"
-            >
-                <lib-ui-icon icon="building" [size]="16" class="text-white" />
-            </div>
+		<!-- Nav -->
+		<nav class="flex-1 py-3 overflow-y-auto overflow-x-hidden">
+			@for (section of menu.visibleSections(); track section.title) {
+				<div class="mb-1">
+					<!-- Cabecera de sección (solo cuando está expandido y tiene título) -->
+					@if (section.title && !collapsed()) {
+						<p
+							class="px-4 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-surface-400 dark:text-surface-600 whitespace-nowrap"
+						>
+							{{ section.title }}
+						</p>
+					}
 
-            @if (!collapsed()) {
-                <span
-                    class="text-surface-900 dark:text-surface-50 font-semibold text-base
-                           tracking-tight whitespace-nowrap"
-                >
-                    ERP Solid
-                </span>
-            }
-        </div>
+					<!-- Separador cuando está colapsado y hay título (separa grupos visualmente) -->
+					@if (section.title && collapsed()) {
+						<div class="mx-3 my-2 border-t border-surface-100 dark:border-surface-800"></div>
+					}
 
-        <!-- Nav -->
-        <nav class="flex-1 py-3 overflow-y-auto overflow-x-hidden">
-            @for (section of menu.visibleSections(); track section.title) {
-                <div class="mb-1">
+					<ul class="space-y-0.5 px-2">
+						@for (item of section.items; track item.route) {
+							<li>
+								<a
+									[routerLink]="item.route"
+									routerLinkActive="nav-active"
+									class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-surface-600 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-700/50 hover:text-surface-900 dark:hover:text-white transition-colors duration-150"
+									[title]="collapsed() ? item.label : ''"
+								>
+									<lib-ui-icon
+										[icon]="item.icon"
+										[size]="18"
+										class="flex-shrink-0"
+									/>
+									@if (!collapsed()) {
+										<span class="whitespace-nowrap overflow-hidden">
+											{{ item.label }}
+										</span>
+									}
+								</a>
+							</li>
+						}
+					</ul>
+				</div>
+			}
+		</nav>
 
-                    <!-- Cabecera de sección (solo cuando está expandido y tiene título) -->
-                    @if (section.title && !collapsed()) {
-                        <p
-                            class="px-4 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest
-                                   text-surface-400 dark:text-surface-600 whitespace-nowrap"
-                        >
-                            {{ section.title }}
-                        </p>
-                    }
+		<!-- Botón colapsar -->
+		<div class="flex-shrink-0 border-t border-surface-100 dark:border-surface-800 p-2">
+			<button
+				(click)="toggleCollapse()"
+				class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-surface-400 dark:text-surface-500 hover:bg-surface-100 dark:hover:bg-surface-800 hover:text-surface-600 dark:hover:text-surface-300 transition-colors duration-150"
+				[title]="collapsed() ? 'Expandir menú' : 'Colapsar menú'"
+			>
+				<lib-ui-icon
+					[icon]="collapsed() ? 'chevron-right' : 'chevron-left'"
+					[size]="16"
+				/>
+				@if (!collapsed()) {
+					<span class="text-xs">Colapsar</span>
+				}
+			</button>
+		</div>
+	</aside>
 
-                    <!-- Separador cuando está colapsado y hay título (separa grupos visualmente) -->
-                    @if (section.title && collapsed()) {
-                        <div class="mx-3 my-2 border-t border-surface-100 dark:border-surface-800"></div>
-                    }
+	<!-- ── Main area ─────────────────────────────────────────────────── -->
+	<div class="flex flex-col flex-1 min-w-0 overflow-hidden">
+		<!-- Header -->
+		<header
+			class="flex items-center justify-between px-6 bg-white dark:bg-surface-900 border-b border-surface-200 dark:border-surface-800 h-16 flex-shrink-0"
+		>
+			<!-- Espacio izquierdo (breadcrumb / título de página irán aquí) -->
+			<div></div>
 
-                    <ul class="space-y-0.5 px-2">
-                        @for (item of section.items; track item.route) {
-                            <li>
-                                <a
-                                    [routerLink]="item.route"
-                                    routerLinkActive="nav-active"
-                                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm
-                                           font-medium text-surface-600 dark:text-surface-300
-                                           hover:bg-surface-100 dark:hover:bg-surface-700/50
-                                           hover:text-surface-900 dark:hover:text-white
-                                           transition-colors duration-150"
-                                    [title]="collapsed() ? item.label : ''"
-                                >
-                                    <lib-ui-icon [icon]="item.icon" [size]="18" class="flex-shrink-0" />
-                                    @if (!collapsed()) {
-                                        <span class="whitespace-nowrap overflow-hidden">
-                                            {{ item.label }}
-                                        </span>
-                                    }
-                                </a>
-                            </li>
-                        }
-                    </ul>
+			<!-- Acciones derecha -->
+			<div class="flex items-center gap-1.5">
+				<!-- Toggle dark mode -->
+				<button
+					(click)="theme.toggle()"
+					class="w-9 h-9 rounded-lg flex items-center justify-center text-surface-500 hover:text-surface-700 hover:bg-surface-100 dark:text-surface-400 dark:hover:text-surface-200 dark:hover:bg-surface-800 transition-colors duration-150"
+					aria-label="Cambiar tema"
+				>
+					@if (theme.isDark()) {
+						<lib-ui-icon
+							icon="sun"
+							[size]="17"
+						/>
+					} @else {
+						<lib-ui-icon
+							icon="moon"
+							[size]="17"
+						/>
+					}
+				</button>
 
-                </div>
-            }
-        </nav>
+				<!-- Separador -->
+				<div class="w-px h-5 bg-surface-200 dark:bg-surface-700 mx-1"></div>
 
-        <!-- Botón colapsar -->
-        <div class="flex-shrink-0 border-t border-surface-100 dark:border-surface-800 p-2">
-            <button
-                (click)="toggleCollapse()"
-                class="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg
-                       text-surface-400 dark:text-surface-500
-                       hover:bg-surface-100 dark:hover:bg-surface-800
-                       hover:text-surface-600 dark:hover:text-surface-300
-                       transition-colors duration-150"
-                [title]="collapsed() ? 'Expandir menú' : 'Colapsar menú'"
-            >
-                <lib-ui-icon
-                    [icon]="collapsed() ? 'chevron-right' : 'chevron-left'"
-                    [size]="16"
-                />
-                @if (!collapsed()) {
-                    <span class="text-xs">Colapsar</span>
-                }
-            </button>
-        </div>
+				<!-- Menú de usuario -->
+				<div class="relative">
+					<button
+						(click)="toggleUserMenu()"
+						class="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-lg text-surface-700 dark:text-surface-200 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors duration-150"
+					>
+						<div
+							class="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/50 flex items-center justify-center flex-shrink-0"
+						>
+							<lib-ui-icon
+								icon="circle-user-round"
+								[size]="17"
+								class="text-primary-600 dark:text-primary-400"
+							/>
+						</div>
 
-    </aside>
+						<div class="hidden sm:flex flex-col items-start leading-none">
+							<span
+								class="text-sm font-medium text-surface-800 dark:text-surface-100 truncate max-w-[130px]"
+							>
+								{{ displayName() }}
+							</span>
+							<span class="text-xs text-surface-500 dark:text-surface-400 truncate max-w-[130px]">
+								{{ roleName() }}
+							</span>
+						</div>
 
-    <!-- ── Main area ─────────────────────────────────────────────────── -->
-    <div class="flex flex-col flex-1 min-w-0 overflow-hidden">
+						<lib-ui-icon
+							icon="chevron-down"
+							[size]="14"
+							class="text-surface-400 dark:text-surface-500"
+						/>
+					</button>
 
-        <!-- Header -->
-        <header
-            class="flex items-center justify-between px-6 bg-white dark:bg-surface-900
-                   border-b border-surface-200 dark:border-surface-800 h-16 flex-shrink-0"
-        >
+					@if (userMenuOpen()) {
+						<div
+							class="fixed inset-0 z-10"
+							(click)="closeUserMenu()"
+						></div>
 
-            <!-- Espacio izquierdo (breadcrumb / título de página irán aquí) -->
-            <div></div>
+						<div
+							class="absolute right-0 top-full mt-1.5 z-20 w-56 rounded-xl bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-700 shadow-lg shadow-surface-900/8 dark:shadow-surface-950/40 overflow-hidden"
+						>
+							<div class="px-4 py-3 border-b border-surface-100 dark:border-surface-800">
+								<p class="text-sm font-semibold text-surface-900 dark:text-surface-50 truncate">
+									{{ displayName() }}
+								</p>
+								<p class="text-xs text-surface-500 dark:text-surface-400 truncate mt-0.5">
+									{{ roleName() }}
+								</p>
+							</div>
 
-            <!-- Acciones derecha -->
-            <div class="flex items-center gap-1.5">
+							<div class="py-1.5">
+								<a
+									routerLink="profile"
+									(click)="closeUserMenu()"
+									class="flex items-center gap-3 px-4 py-2 text-sm text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800 transition-colors duration-100"
+								>
+									<lib-ui-icon
+										icon="user-pen"
+										[size]="15"
+									/>
+									Mi perfil
+								</a>
 
-                <!-- Toggle dark mode -->
-                <button
-                    (click)="theme.toggle()"
-                    class="w-9 h-9 rounded-lg flex items-center justify-center
-                           text-surface-500 hover:text-surface-700 hover:bg-surface-100
-                           dark:text-surface-400 dark:hover:text-surface-200 dark:hover:bg-surface-800
-                           transition-colors duration-150"
-                    aria-label="Cambiar tema"
-                >
-                    @if (theme.isDark()) {
-                        <lib-ui-icon icon="sun" [size]="17" />
-                    } @else {
-                        <lib-ui-icon icon="moon" [size]="17" />
-                    }
-                </button>
+								<div class="my-1 mx-3 border-t border-surface-100 dark:border-surface-800"></div>
 
-                <!-- Separador -->
-                <div class="w-px h-5 bg-surface-200 dark:bg-surface-700 mx-1"></div>
+								<button
+									class="w-full flex items-center gap-3 px-4 py-2 text-sm text-danger-600 dark:text-danger-400 hover:bg-danger-50 dark:hover:bg-danger-900/20 transition-colors duration-100"
+								>
+									<lib-ui-icon
+										icon="lock-keyhole"
+										[size]="15"
+									/>
+									Cerrar sesión
+								</button>
+							</div>
+						</div>
+					}
+				</div>
+			</div>
+		</header>
 
-                <!-- Menú de usuario -->
-                <div class="relative">
-
-                    <button
-                        (click)="toggleUserMenu()"
-                        class="flex items-center gap-2.5 pl-2 pr-3 py-1.5 rounded-lg
-                               text-surface-700 dark:text-surface-200
-                               hover:bg-surface-100 dark:hover:bg-surface-800
-                               transition-colors duration-150"
-                    >
-                        <div
-                            class="w-7 h-7 rounded-full bg-primary-100 dark:bg-primary-900/50
-                                   flex items-center justify-center flex-shrink-0"
-                        >
-                            <lib-ui-icon
-                                icon="circle-user-round"
-                                [size]="17"
-                                class="text-primary-600 dark:text-primary-400"
-                            />
-                        </div>
-
-                        <div class="hidden sm:flex flex-col items-start leading-none">
-                            <span
-                                class="text-sm font-medium text-surface-800
-                                       dark:text-surface-100 truncate max-w-[130px]"
-                            >
-                                {{ displayName() }}
-                            </span>
-                            <span
-                                class="text-xs text-surface-500 dark:text-surface-400
-                                       truncate max-w-[130px]"
-                            >
-                                {{ roleName() }}
-                            </span>
-                        </div>
-
-                        <lib-ui-icon
-                            icon="chevron-down"
-                            [size]="14"
-                            class="text-surface-400 dark:text-surface-500"
-                        />
-                    </button>
-
-                    @if (userMenuOpen()) {
-                        <div
-                            class="fixed inset-0 z-10"
-                            (click)="closeUserMenu()"
-                        ></div>
-
-                        <div
-                            class="absolute right-0 top-full mt-1.5 z-20 w-56 rounded-xl
-                                   bg-white dark:bg-surface-900
-                                   border border-surface-200 dark:border-surface-700
-                                   shadow-lg shadow-surface-900/8 dark:shadow-surface-950/40
-                                   overflow-hidden"
-                        >
-                            <div
-                                class="px-4 py-3 border-b border-surface-100 dark:border-surface-800"
-                            >
-                                <p
-                                    class="text-sm font-semibold text-surface-900
-                                           dark:text-surface-50 truncate"
-                                >
-                                    {{ displayName() }}
-                                </p>
-                                <p
-                                    class="text-xs text-surface-500 dark:text-surface-400
-                                           truncate mt-0.5"
-                                >
-                                    {{ roleName() }}
-                                </p>
-                            </div>
-
-                            <div class="py-1.5">
-                                <a
-                                    routerLink="profile"
-                                    (click)="closeUserMenu()"
-                                    class="flex items-center gap-3 px-4 py-2 text-sm
-                                           text-surface-700 dark:text-surface-300
-                                           hover:bg-surface-50 dark:hover:bg-surface-800
-                                           transition-colors duration-100"
-                                >
-                                    <lib-ui-icon icon="user-pen" [size]="15" />
-                                    Mi perfil
-                                </a>
-
-                                <div
-                                    class="my-1 mx-3 border-t border-surface-100
-                                           dark:border-surface-800"
-                                ></div>
-
-                                <button
-                                    class="w-full flex items-center gap-3 px-4 py-2 text-sm
-                                           text-danger-600 dark:text-danger-400
-                                           hover:bg-danger-50 dark:hover:bg-danger-900/20
-                                           transition-colors duration-100"
-                                >
-                                    <lib-ui-icon icon="lock-keyhole" [size]="15" />
-                                    Cerrar sesión
-                                </button>
-                            </div>
-                        </div>
-                    }
-
-                </div>
-            </div>
-        </header>
-
-        <!-- Contenido proyectado -->
-        <main class="flex-1 overflow-y-auto">
-            <ng-content />
-        </main>
-
-    </div>
+		<!-- Contenido proyectado -->
+		<main class="flex-1 overflow-y-auto">
+			<router-outlet />
+		</main>
+	</div>
 </div>

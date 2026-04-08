@@ -14,6 +14,10 @@ export const privateRoutes: Route[] = [
 				component: DashboardPage,
 			},
 			{
+				path: '',
+				loadChildren: () => import('./sales/sale.route').then(m => m.SaleRoutes),
+			},
+			{
 				path: '**',
 				redirectTo: 'dashboard',
 				pathMatch: 'full',

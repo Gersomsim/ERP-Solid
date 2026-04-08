@@ -1,0 +1,30 @@
+@if (link()) {
+	<a
+		[routerLink]="link()"
+		[class]="classes()"
+	>
+		@if (loading()) {
+			<lib-ui-icon
+				icon="loader-circle"
+				[size]="iconSize()"
+				class="animate-spin"
+			/>
+		}
+		<ng-content />
+	</a>
+} @else if (href()) {
+	<a
+		[href]="href()"
+		[target]="target()"
+		[class]="classes()"
+	>
+		@if (loading()) {
+			<lib-ui-icon
+				icon="loader-circle"
+				[size]="iconSize()"
+				class="animate-spin"
+			/>
+		}
+		<ng-content />
+	</a>
+}

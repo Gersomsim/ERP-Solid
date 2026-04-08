@@ -1,0 +1,142 @@
+<div class="overflow-hidden rounded-xl border border-surface-200 dark:border-surface-700">
+    <table class="w-full text-sm">
+
+        <!-- ── Cabecera ──────────────────────────────────────────────── -->
+        <thead>
+            <tr class="bg-surface-50 dark:bg-surface-800 border-b border-surface-200 dark:border-surface-700">
+                <th class="px-4 py-3 text-left font-medium text-surface-500 dark:text-surface-400 tracking-wide text-xs uppercase">
+                    Cliente
+                </th>
+                <th class="px-4 py-3 text-left font-medium text-surface-500 dark:text-surface-400 tracking-wide text-xs uppercase">
+                    RFC / Tax ID
+                </th>
+                <th class="px-4 py-3 text-left font-medium text-surface-500 dark:text-surface-400 tracking-wide text-xs uppercase hidden md:table-cell">
+                    Correo
+                </th>
+                <th class="px-4 py-3 text-left font-medium text-surface-500 dark:text-surface-400 tracking-wide text-xs uppercase hidden lg:table-cell">
+                    Ciudad
+                </th>
+                <th class="px-4 py-3 text-right font-medium text-surface-500 dark:text-surface-400 tracking-wide text-xs uppercase hidden lg:table-cell">
+                    Límite de crédito
+                </th>
+                <th class="px-4 py-3 text-right font-medium text-surface-500 dark:text-surface-400 tracking-wide text-xs uppercase">
+                    Acciones
+                </th>
+            </tr>
+        </thead>
+
+        <!-- ── Body ─────────────────────────────────────────────────── -->
+        <tbody class="divide-y divide-surface-100 dark:divide-surface-800 bg-white dark:bg-surface-900">
+
+            @if (loading()) {
+                <!-- Skeleton rows -->
+                @for (i of [1,2,3,4,5]; track i) {
+                    <tr>
+                        <td class="px-4 py-3" colspan="6">
+                            <div class="h-4 bg-surface-100 dark:bg-surface-800 rounded animate-pulse"></div>
+                        </td>
+                    </tr>
+                }
+            } @else if (customers().length === 0) {
+                <!-- Estado vacío -->
+                <tr>
+                    <td colspan="6" class="px-4 py-12 text-center">
+                        <div class="flex flex-col items-center gap-2 text-surface-400 dark:text-surface-500">
+                            <lib-ui-icon icon="users" [size]="36" />
+                            <p class="text-sm font-medium">No se encontraron clientes</p>
+                            <p class="text-xs">Intenta ajustar tu búsqueda</p>
+                        </div>
+                    </td>
+                </tr>
+            } @else {
+                @for (customer of customers(); track customer.id) {
+                    <tr class="hover:bg-surface-50 dark:hover:bg-surface-800/50 transition-colors duration-100">
+
+                        <!-- Nombre -->
+                        <td class="px-4 py-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-900/40
+                                            flex items-center justify-center flex-shrink-0">
+                                    <span class="text-xs font-semibold text-primary-700 dark:text-primary-400">
+                                        {{ customer.name.charAt(0).toUpperCase() }}
+                                    </span>
+                                </div>
+                                <div class="min-w-0">
+                                    <p class="font-medium text-surface-900 dark:text-surface-100 truncate">
+                                        {{ customer.name }}
+                                    </p>
+                                    @if (customer.phone) {
+                                        <p class="text-xs text-surface-400 dark:text-surface-500 truncate">
+                                            {{ customer.phone }}
+                                        </p>
+                                    }
+                                </div>
+                            </div>
+                        </td>
+
+                        <!-- Tax ID -->
+                        <td class="px-4 py-3 text-surface-600 dark:text-surface-300 font-mono text-xs">
+                            {{ customer.taxId }}
+                        </td>
+
+                        <!-- Correo -->
+                        <td class="px-4 py-3 text-surface-500 dark:text-surface-400 hidden md:table-cell">
+                            {{ customer.email ?? '—' }}
+                        </td>
+
+                        <!-- Ciudad -->
+                        <td class="px-4 py-3 text-surface-500 dark:text-surface-400 hidden lg:table-cell">
+                            {{ customer.city ?? '—' }}
+                        </td>
+
+                        <!-- Crédito -->
+                        <td class="px-4 py-3 text-right text-surface-700 dark:text-surface-300 font-medium hidden lg:table-cell">
+                            {{ customer.creditLimit | number: '1.2-2' }}
+                        </td>
+
+                        <!-- Acciones -->
+                        <td class="px-4 py-3">
+                            <div class="flex items-center justify-end gap-1">
+                                <button
+                                    type="button"
+                                    (click)="view.emit(customer)"
+                                    class="w-8 h-8 flex items-center justify-center rounded-lg
+                                           text-surface-400 hover:text-primary-600 hover:bg-primary-50
+                                           dark:hover:text-primary-400 dark:hover:bg-primary-900/20
+                                           transition-colors duration-150"
+                                    aria-label="Ver detalle"
+                                >
+                                    <lib-ui-icon icon="eye" [size]="15" />
+                                </button>
+                                <button
+                                    type="button"
+                                    (click)="edit.emit(customer)"
+                                    class="w-8 h-8 flex items-center justify-center rounded-lg
+                                           text-surface-400 hover:text-surface-700 hover:bg-surface-100
+                                           dark:hover:text-surface-200 dark:hover:bg-surface-700
+                                           transition-colors duration-150"
+                                    aria-label="Editar"
+                                >
+                                    <lib-ui-icon icon="user-pen" [size]="15" />
+                                </button>
+                                <button
+                                    type="button"
+                                    (click)="delete.emit(customer)"
+                                    class="w-8 h-8 flex items-center justify-center rounded-lg
+                                           text-surface-400 hover:text-danger-600 hover:bg-danger-50
+                                           dark:hover:text-danger-400 dark:hover:bg-danger-900/20
+                                           transition-colors duration-150"
+                                    aria-label="Eliminar"
+                                >
+                                    <lib-ui-icon icon="trash-2" [size]="15" />
+                                </button>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+</div>

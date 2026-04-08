@@ -27,7 +27,7 @@ export class MenuService {
 				{
 					label: 'Clientes',
 					icon: 'users',
-					route: 'customers',
+					route: 'customer',
 					viewPermission: 'customers.view',
 				},
 				{

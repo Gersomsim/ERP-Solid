@@ -1,0 +1,79 @@
+<div class="flex items-center justify-between gap-4 text-sm">
+
+    <!-- Info: mostrando X – Y de Z -->
+    <p class="text-surface-500 dark:text-surface-400 whitespace-nowrap">
+        @if (total() === 0) {
+            Sin resultados
+        } @else {
+            Mostrando {{ from() }} – {{ to() }} de {{ total() }}
+        }
+    </p>
+
+    <!-- Controles de página -->
+    @if (totalPages() > 1) {
+        <nav class="flex items-center gap-1" aria-label="Paginación">
+
+            <!-- Anterior -->
+            <button
+                type="button"
+                [disabled]="!hasPrev()"
+                (click)="goTo(page() - 1)"
+                class="flex items-center justify-center w-8 h-8 rounded-lg border
+                       border-surface-200 dark:border-surface-700
+                       bg-white dark:bg-surface-900
+                       text-surface-600 dark:text-surface-300
+                       hover:bg-surface-50 dark:hover:bg-surface-800
+                       disabled:opacity-40 disabled:cursor-not-allowed
+                       transition-colors duration-150"
+                aria-label="Página anterior"
+            >
+                <lib-ui-icon icon="chevron-left" [size]="14" />
+            </button>
+
+            <!-- Números de página -->
+            @for (p of visiblePages(); track p) {
+                @if (p < 0) {
+                    <!-- Ellipsis -->
+                    <span
+                        class="flex items-center justify-center w-8 h-8
+                               text-surface-400 dark:text-surface-600"
+                    >
+                        &hellip;
+                    </span>
+                } @else {
+                    <button
+                        type="button"
+                        (click)="goTo(p)"
+                        [attr.aria-current]="p === page() ? 'page' : null"
+                        class="flex items-center justify-center w-8 h-8 rounded-lg border text-sm
+                               font-medium transition-colors duration-150"
+                        [class]="p === page()
+                            ? 'bg-primary-800 dark:bg-primary-700 text-white border-primary-800 dark:border-primary-700'
+                            : 'bg-white dark:bg-surface-900 border-surface-200 dark:border-surface-700 text-surface-700 dark:text-surface-300 hover:bg-surface-50 dark:hover:bg-surface-800'"
+                    >
+                        {{ p }}
+                    </button>
+                }
+            }
+
+            <!-- Siguiente -->
+            <button
+                type="button"
+                [disabled]="!hasNext()"
+                (click)="goTo(page() + 1)"
+                class="flex items-center justify-center w-8 h-8 rounded-lg border
+                       border-surface-200 dark:border-surface-700
+                       bg-white dark:bg-surface-900
+                       text-surface-600 dark:text-surface-300
+                       hover:bg-surface-50 dark:hover:bg-surface-800
+                       disabled:opacity-40 disabled:cursor-not-allowed
+                       transition-colors duration-150"
+                aria-label="Página siguiente"
+            >
+                <lib-ui-icon icon="chevron-right" [size]="14" />
+            </button>
+
+        </nav>
+    }
+
+</div>
