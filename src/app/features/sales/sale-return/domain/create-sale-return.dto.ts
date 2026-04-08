@@ -1,10 +1,8 @@
 import { SaleReturnResolution } from './sale-return-resolution.enum'
 import { SaleReturnStatus } from './sale-return-status.enum'
 
-export interface SaleReturn {
-	id: string
+export interface CreateSaleReturnDto {
 	saleId: string
-	tenantId: string
 	reason: string
 	status: SaleReturnStatus
 	resolutionType: SaleReturnResolution
