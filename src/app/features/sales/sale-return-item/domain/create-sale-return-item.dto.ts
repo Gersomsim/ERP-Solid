@@ -1,5 +1,4 @@
-export interface SaleReturnItem {
-	id: string
+export interface CreateSaleReturnItemDto {
 	saleReturnId: string
 	saleItemId: string
 	productId: string
