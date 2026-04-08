@@ -2,8 +2,15 @@
 	<div class="space-y-6">
 		<!-- ── Encabezado ───────────────────────────────────────────── -->
 		<div class="flex items-center gap-3">
-			<lib-ui-link link="../list" variant="ghost" size="sm">
-				<lib-ui-icon icon="arrow-left" [size]="15" />
+			<lib-ui-link
+				link="../../list"
+				variant="ghost"
+				size="sm"
+			>
+				<lib-ui-icon
+					icon="arrow-left"
+					[size]="15"
+				/>
 			</lib-ui-link>
 
 			<lib-ui-page-title>
@@ -15,7 +22,9 @@
 		</div>
 
 		<!-- ── Card con formulario ───────────────────────────────────── -->
-		<div class="rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 p-6 shadow-sm">
+		<div
+			class="rounded-xl border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-900 p-6 shadow-sm"
+		>
 			@if (customer()) {
 				<app-customer-form
 					[initialValue]="initialValue()"
@@ -25,7 +34,10 @@
 				/>
 			} @else {
 				<div class="flex flex-col items-center gap-2 py-12 text-surface-400 dark:text-surface-500">
-					<lib-ui-icon icon="users" [size]="36" />
+					<lib-ui-icon
+						icon="users"
+						[size]="36"
+					/>
 					<p class="text-sm font-medium">Cliente no encontrado</p>
 				</div>
 			}
