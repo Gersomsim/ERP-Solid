@@ -26,6 +26,9 @@
 		<!-- Tabla -->
 		<lib-ui-card padding="none">
 			<lib-ui-card-header>
+				<div class="flex-1 max-w-sm">
+					<lib-ui-search-input placeholder="Buscar por nombre" />
+				</div>
 				<span class="text-xs text-surface-500 dark:text-surface-400">
 					{{ totalItems() }} resultado{{ totalItems() !== 1 ? 's' : '' }}
 				</span>

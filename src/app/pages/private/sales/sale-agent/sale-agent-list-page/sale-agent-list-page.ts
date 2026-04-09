@@ -1,8 +1,12 @@
 import { Component, computed, inject, resource } from '@angular/core'
+import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router } from '@angular/router'
+
+import { map } from 'rxjs'
 
 import { Card, CardHeader, Link, PageTitle } from '@ui/atoms'
 import { Icon } from '@ui/atoms/icon/icon'
+import { SearchInput } from '@ui/molecules'
 import { MainContainer } from '@ui/templates/main-container/main-container'
 
 import { GetSaleAgentsUseCase } from '@features/sales/sale-agent/app'
@@ -12,7 +16,7 @@ import { SaleAgentTable } from '@features/sales/sale-agent/presentation/sale-age
 
 @Component({
 	selector: 'app-sale-agent-list-page',
-	imports: [Card, CardHeader, Icon, SaleAgentTable, Link, MainContainer, PageTitle],
+	imports: [Card, CardHeader, Icon, SaleAgentTable, Link, MainContainer, PageTitle, SearchInput],
 	templateUrl: './sale-agent-list-page.html',
 	providers: [SaleAgentProvider, GetSaleAgentsUseCase],
 })
@@ -21,8 +25,13 @@ export class SaleAgentListPage {
 	private readonly route = inject(ActivatedRoute)
 	private readonly getSaleAgentsUseCase = inject(GetSaleAgentsUseCase)
 
+	private readonly search = toSignal(this.route.queryParamMap.pipe(map(params => params.get('search') ?? '')), {
+		initialValue: '',
+	})
+
 	agentsRes = resource({
-		loader: () => this.getSaleAgentsUseCase.execute(),
+		params: () => this.search(),
+		loader: () => this.getSaleAgentsUseCase.execute({ search: this.search() }),
 	})
 	pagination = computed(() => this.agentsRes.value()?.pagination ?? null)
 
