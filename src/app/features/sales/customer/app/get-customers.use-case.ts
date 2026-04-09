@@ -9,7 +9,7 @@ import { CustomerToken } from '../infra'
 export class GetCustomersUseCase {
 	private readonly customerRepository = inject(CustomerToken)
 
-	execute(query: QueryRequestDto): Promise<PaginateDto<Customer>> {
+	execute(query?: QueryRequestDto): Promise<PaginateDto<Customer>> {
 		return this.customerRepository.getAll(query)
 	}
 }

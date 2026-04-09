@@ -35,6 +35,7 @@ export class CustomerListPage {
 	})
 
 	customerRes = resource({
+		params: () => this.searchTerm() + this.page(),
 		loader: () => this.getCustomersUseCase.execute({ search: this.searchTerm(), page: this.page() }),
 	})
 	paginate = computed(() => {

@@ -4,6 +4,7 @@ import { firstValueFrom, map } from 'rxjs'
 
 import { HttpService } from '@core/http'
 
+import { QueryRequestDto } from '@features/common/dto'
 import { PaginateDto } from '@features/common/dto/paginate.dto'
 
 import { CreateCustomerDto, Customer, CustomerRepository } from '../domain'
@@ -13,8 +14,9 @@ export class CustomerImplRepository implements CustomerRepository {
 	private readonly path = '/customers'
 	private readonly http = inject(HttpService)
 
-	getAll(): Promise<PaginateDto<Customer>> {
-		const response = this.http.get<Customer[]>(this.path, { withCredentials: true }).pipe(
+	getAll(query?: QueryRequestDto): Promise<PaginateDto<Customer>> {
+		const filters = query as Record<string, string>
+		const response = this.http.get<Customer[]>(this.path, { withCredentials: true, params: filters }).pipe(
 			map(response => {
 				return {
 					data: response.data,
