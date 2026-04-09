@@ -1,13 +1,13 @@
 import { Injectable, inject } from '@angular/core'
 
-import { Customer } from '../domain'
+import { CreateCustomerDto, Customer, CustomerRepository } from '../domain'
 import { CustomerToken } from '../infra'
 
 @Injectable()
 export class CreateCustomerUseCase {
-	private readonly customerRepository = inject(CustomerToken)
+	private readonly customerRepository = inject<CustomerRepository>(CustomerToken)
 
-	execute(customer: Customer): Promise<Customer> {
+	execute(customer: CreateCustomerDto): Promise<Customer> {
 		return this.customerRepository.create(customer)
 	}
 }

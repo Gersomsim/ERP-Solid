@@ -4,9 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms'
 import { Button } from '@ui/atoms/button/button'
 import { Input } from '@ui/atoms/input/input'
 
-import { Customer } from '../../domain/customer.model'
-
-export type CustomerFormValue = Omit<Customer, 'id' | 'tenantId'>
+import { CreateCustomerDto } from '../../domain'
 
 @Component({
 	selector: 'app-customer-form',
@@ -15,9 +13,9 @@ export type CustomerFormValue = Omit<Customer, 'id' | 'tenantId'>
 })
 export class CustomerForm {
 	loading = input<boolean>(false)
-	initialValue = input<CustomerFormValue | null>(null)
+	initialValue = input<CreateCustomerDto | null>(null)
 
-	submit = output<CustomerFormValue>()
+	Submit = output<CreateCustomerDto>()
 	cancel = output<void>()
 
 	private readonly fb = inject(FormBuilder)
@@ -55,7 +53,7 @@ export class CustomerForm {
 			return
 		}
 		const raw = this.form.getRawValue()
-		this.submit.emit({
+		this.Submit.emit({
 			name: raw.name,
 			taxId: raw.taxId,
 			creditLimit: Number(raw.creditLimit),

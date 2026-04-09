@@ -8,8 +8,9 @@ import { Card, Link, PageTitle } from '@ui/atoms'
 import { Icon } from '@ui/atoms/icon/icon'
 import { MainContainer } from '@ui/templates/main-container/main-container'
 
+import { CreateCustomerDto } from '@features/sales/customer/domain'
 import { Customer } from '@features/sales/customer/domain/customer.model'
-import { CustomerForm, CustomerFormValue } from '@features/sales/customer/presentation/customer-form/customer-form'
+import { CustomerForm } from '@features/sales/customer/presentation/customer-form/customer-form'
 
 // TODO: reemplazar con llamada al repositorio
 const MOCK_CUSTOMERS: Customer[] = [
@@ -76,14 +77,14 @@ export class CustomerEditPage {
 		return MOCK_CUSTOMERS.find(c => c.id === id) ?? null
 	})
 
-	protected initialValue = computed<CustomerFormValue | null>(() => {
+	protected initialValue = computed<CreateCustomerDto | null>(() => {
 		const c = this.customer()
 		if (!c) return null
 		const { id: _, tenantId: __, ...rest } = c
 		return rest
 	})
 
-	protected async onSubmit(value: CustomerFormValue): Promise<void> {
+	protected async onSubmit(value: CreateCustomerDto): Promise<void> {
 		this.loading.set(true)
 		try {
 			// TODO: llamar al use case de actualización
