@@ -4,6 +4,8 @@ import { firstValueFrom, map } from 'rxjs'
 
 import { HttpService } from '@core/http'
 
+import { PaginateDto, QueryRequestDto } from '@features/common/dto'
+
 import { CreateSaleAgentDto, SaleAgent, SaleAgentRepository } from '../domain'
 
 @Injectable()
@@ -11,8 +13,16 @@ export class SaleAgentImplRepository implements SaleAgentRepository {
 	private readonly path = '/sale-agents'
 	private readonly http = inject(HttpService)
 
-	getAll(): Promise<SaleAgent[]> {
-		const response = this.http.get<SaleAgent[]>(this.path).pipe(map(response => response.data))
+	getAll(query: QueryRequestDto): Promise<PaginateDto<SaleAgent>> {
+		const filtres = query as Record<string, string | number | boolean>
+		const response = this.http.get<SaleAgent[]>(this.path, { params: filtres }).pipe(
+			map(response => {
+				return {
+					data: response.data,
+					pagination: response.meta.pagination!,
+				}
+			}),
+		)
 		return firstValueFrom(response)
 	}
 

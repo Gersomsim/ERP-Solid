@@ -1,5 +1,5 @@
 export interface CreateSaleAgentDto {
 	name: string
-	userId: string | null
+	userId?: string
 	commissionRate: number
 }
