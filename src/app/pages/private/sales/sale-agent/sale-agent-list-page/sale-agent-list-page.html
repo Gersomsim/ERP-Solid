@@ -1,1 +1,36 @@
-<p>sale-agent-list-page works!</p>
+<lib-ui-main-container>
+	<div class="space-y-5">
+		<!-- Encabezado -->
+		<div class="flex items-start justify-between gap-4">
+			<lib-ui-page-title>
+				Agentes de venta
+				<span subtitle>
+					{{ totalItems() }} agente{{ totalItems() !== 1 ? 's' : '' }} registrado{{
+						totalItems() !== 1 ? 's' : ''
+					}}
+				</span>
+			</lib-ui-page-title>
+
+			<lib-ui-link link="../new" type="link">
+				<lib-ui-icon icon="plus" [size]="16" />
+				Nuevo agente
+			</lib-ui-link>
+		</div>
+
+		<!-- Tabla -->
+		<lib-ui-card padding="none">
+			<lib-ui-card-header>
+				<span class="text-xs text-surface-500 dark:text-surface-400">
+					{{ totalItems() }} resultado{{ totalItems() !== 1 ? 's' : '' }}
+				</span>
+			</lib-ui-card-header>
+
+			<app-sale-agent-table
+				[agents]="agentsRes.value() ?? []"
+				[loading]="agentsRes.isLoading()"
+				(view)="onView($event)"
+				(edit)="onEdit($event)"
+			/>
+		</lib-ui-card>
+	</div>
+</lib-ui-main-container>
