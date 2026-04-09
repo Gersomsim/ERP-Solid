@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core'
+import { Component, computed, inject, resource, signal } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router } from '@angular/router'
 
@@ -8,74 +8,31 @@ import { Card, Link, PageTitle } from '@ui/atoms'
 import { Icon } from '@ui/atoms/icon/icon'
 import { MainContainer } from '@ui/templates/main-container/main-container'
 
+import { GetCustomerByIdUseCase, UpdateCustomerUseCase } from '@features/sales/customer/app'
 import { CreateCustomerDto } from '@features/sales/customer/domain'
-import { Customer } from '@features/sales/customer/domain/customer.model'
+import { CustomerProvider } from '@features/sales/customer/infra'
 import { CustomerForm } from '@features/sales/customer/presentation/customer-form/customer-form'
-
-// TODO: reemplazar con llamada al repositorio
-const MOCK_CUSTOMERS: Customer[] = [
-	{
-		id: '1',
-		name: 'Constructora del Norte SA',
-		taxId: 'CNO-980123-AB1',
-		email: 'contacto@constructoranorte.mx',
-		phone: '555-1001',
-		address: 'Av. Industrial 45',
-		city: 'Monterrey',
-		state: 'NL',
-		zip: '64000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 150000,
-	},
-	{
-		id: '2',
-		name: 'Distribuidora Omega',
-		taxId: 'DOM-770412-CD2',
-		email: 'ventas@omega.mx',
-		phone: '555-2002',
-		address: 'Blvd. Central 12',
-		city: 'Guadalajara',
-		state: 'JL',
-		zip: '44100',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 80000,
-	},
-	{
-		id: '3',
-		name: 'Grupo Industrial Alfa',
-		taxId: 'GIA-650301-EF3',
-		email: '',
-		phone: '555-3003',
-		address: 'Calz. Obrera 88',
-		city: 'CDMX',
-		state: 'CDMX',
-		zip: '06800',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 200000,
-	},
-]
 
 @Component({
 	selector: 'app-customer-edit-page',
 	imports: [Card, Link, Icon, PageTitle, CustomerForm, MainContainer],
 	templateUrl: './customer-edit-page.html',
+	providers: [CustomerProvider, GetCustomerByIdUseCase, UpdateCustomerUseCase],
 })
 export class CustomerEditPage {
 	private readonly route = inject(ActivatedRoute)
 	private readonly router = inject(Router)
+	private readonly getCustomerByIdUseCase = inject(GetCustomerByIdUseCase)
+	private readonly updateCustomerUseCase = inject(UpdateCustomerUseCase)
 
 	protected loading = signal(false)
 
-	private readonly customerId = toSignal(this.route.params.pipe(map(p => p['id'] as string | undefined)))
-
-	protected customer = computed<Customer | null>(() => {
-		const id = this.customerId()
-		if (!id) return null
-		return MOCK_CUSTOMERS.find(c => c.id === id) ?? null
+	private readonly customerId = toSignal(this.route.params.pipe(map(p => p['id'])))
+	customerRes = resource({
+		loader: () => this.getCustomerByIdUseCase.execute(this.customerId()),
 	})
+
+	protected customer = computed(() => this.customerRes.value())
 
 	protected initialValue = computed<CreateCustomerDto | null>(() => {
 		const c = this.customer()
@@ -87,9 +44,14 @@ export class CustomerEditPage {
 	protected async onSubmit(value: CreateCustomerDto): Promise<void> {
 		this.loading.set(true)
 		try {
-			// TODO: llamar al use case de actualización
-			console.log('update customer', this.customerId(), value)
-			this.router.navigate(['/private/sales/customer/list'])
+			const customer = this.customer()
+
+			await this.updateCustomerUseCase.execute({
+				id: customer!.id,
+				tenantId: customer!.tenantId,
+				...value,
+			})
+			this.router.navigate(['../../detail', this.customerId()], { relativeTo: this.route })
 		} finally {
 			this.loading.set(false)
 		}

@@ -34,7 +34,7 @@ export class CustomerImplRepository implements CustomerRepository {
 	}
 	update(customer: Customer): Promise<Customer> {
 		const response = this.http
-			.put<Customer>(`${this.path}/${customer.id}`, customer)
+			.patch<Customer>(`${this.path}/${customer.id}`, customer)
 			.pipe(map(response => response.data))
 		return firstValueFrom(response)
 	}
