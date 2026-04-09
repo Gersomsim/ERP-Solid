@@ -209,15 +209,6 @@
 						emptyIcon="shopping-cart"
 						emptyMessage="Sin ventas registradas"
 					/>
-
-					<ng-template
-						#statusCell
-						let-sale
-					>
-						<lib-ui-badge [variant]="statusConfig(sale.status).variant">
-							{{ statusConfig(sale.status).label }}
-						</lib-ui-badge>
-					</ng-template>
 				</lib-ui-card>
 
 				<!-- Columna derecha (1/3) -->
@@ -322,4 +313,13 @@
 
 		}
 	</div>
+
+	<ng-template
+		#statusCell
+		let-sale
+	>
+		<lib-ui-badge [variant]="statusConfig(sale.status).variant">
+			{{ statusConfig(sale.status).label }}
+		</lib-ui-badge>
+	</ng-template>
 </lib-ui-main-container>

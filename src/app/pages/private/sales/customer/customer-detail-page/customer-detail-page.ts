@@ -1,17 +1,18 @@
 import { CommonModule, CurrencyPipe, NgClass } from '@angular/common'
-import { afterNextRender, Component, computed, inject, signal, TemplateRef, viewChild } from '@angular/core'
+import { Component, TemplateRef, afterNextRender, computed, inject, resource, signal, viewChild } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router } from '@angular/router'
 
 import { map } from 'rxjs'
 
-import { Avatar, Badge, Card, CardHeader, Icon, Link, PageTitle, type BadgeVariant } from '@ui/atoms'
+import { Avatar, Badge, type BadgeVariant, Card, CardHeader, Icon, Link, PageTitle } from '@ui/atoms'
 import { StatCard } from '@ui/molecules/stat-card'
 import { Chart, type ChartData } from '@ui/organisms/chart'
 import { DataTable, type TableColumn } from '@ui/organisms/data-table'
 import { MainContainer } from '@ui/templates/main-container/main-container'
 
-import { Customer } from '@features/sales/customer/domain/customer.model'
+import { GetCustomerByIdUseCase } from '@features/sales/customer/app'
+import { CustomerProvider } from '@features/sales/customer/infra'
 
 type SaleStatus = 'paid' | 'pending' | 'overdue' | 'cancelled'
 
@@ -23,178 +24,6 @@ interface Sale {
 	amount: number
 	status: SaleStatus
 }
-
-// TODO: reemplazar con llamada al repositorio
-const MOCK_CUSTOMERS: Customer[] = [
-	{
-		id: '1',
-		name: 'Constructora del Norte SA',
-		taxId: 'CNO-980123-AB1',
-		email: 'contacto@constructoranorte.mx',
-		phone: '555-1001',
-		address: 'Av. Industrial 45',
-		city: 'Monterrey',
-		state: 'NL',
-		zip: '64000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 150000,
-	},
-	{
-		id: '2',
-		name: 'Distribuidora Omega',
-		taxId: 'DOM-770412-CD2',
-		email: 'ventas@omega.mx',
-		phone: '555-2002',
-		address: 'Blvd. Central 12',
-		city: 'Guadalajara',
-		state: 'JL',
-		zip: '44100',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 80000,
-	},
-	{
-		id: '3',
-		name: 'Grupo Industrial Alfa',
-		taxId: 'GIA-650301-EF3',
-		email: '',
-		phone: '555-3003',
-		address: 'Calz. Obrera 88',
-		city: 'CDMX',
-		state: 'CDMX',
-		zip: '06800',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 200000,
-	},
-	{
-		id: '4',
-		name: 'Servicios Logísticos Beta',
-		taxId: 'SLB-890615-GH4',
-		email: 'ops@beta.mx',
-		phone: '',
-		address: '',
-		city: 'Puebla',
-		state: 'PUE',
-		zip: '72000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 50000,
-	},
-	{
-		id: '5',
-		name: 'Importaciones Gamma',
-		taxId: 'IGA-910820-IJ5',
-		email: 'contacto@gamma.mx',
-		phone: '555-5005',
-		address: 'Libramiento 33',
-		city: 'Querétaro',
-		state: 'QRO',
-		zip: '76000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 120000,
-	},
-	{
-		id: '6',
-		name: 'Exportaciones Delta',
-		taxId: 'EDE-840205-KL6',
-		email: 'info@delta.mx',
-		phone: '555-6006',
-		address: 'Av. Constitución 7',
-		city: 'Tijuana',
-		state: 'BC',
-		zip: '22000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 90000,
-	},
-	{
-		id: '7',
-		name: 'Tecnología Épsilon',
-		taxId: 'TEC-001130-MN7',
-		email: 'soporte@epsilon.mx',
-		phone: '555-7007',
-		address: 'Parque Tec 101',
-		city: 'Monterrey',
-		state: 'NL',
-		zip: '64849',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 60000,
-	},
-	{
-		id: '8',
-		name: 'Alimentos Zeta Corp',
-		taxId: 'AZC-750918-OP8',
-		email: 'ventas@zeta.mx',
-		phone: '555-8008',
-		address: 'Zona Industrial 22',
-		city: 'León',
-		state: 'GTO',
-		zip: '37490',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 35000,
-	},
-	{
-		id: '9',
-		name: 'Maquinaria Eta',
-		taxId: 'MAE-680310-QR9',
-		email: '',
-		phone: '555-9009',
-		address: 'Av. Maquinaria 5',
-		city: 'Saltillo',
-		state: 'COAH',
-		zip: '25000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 175000,
-	},
-	{
-		id: '10',
-		name: 'Consultora Theta',
-		taxId: 'CTH-930714-ST0',
-		email: 'hola@theta.mx',
-		phone: '555-0010',
-		address: 'Torre Ejecutiva P12',
-		city: 'CDMX',
-		state: 'CDMX',
-		zip: '11000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 40000,
-	},
-	{
-		id: '11',
-		name: 'Agroindustrias Iota',
-		taxId: 'AGI-820525-UV1',
-		email: 'campo@iota.mx',
-		phone: '555-1011',
-		address: 'Carr. Federal Km 12',
-		city: 'Culiacán',
-		state: 'SIN',
-		zip: '80000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 25000,
-	},
-	{
-		id: '12',
-		name: 'Energía Kappa SA',
-		taxId: 'EKA-710403-WX2',
-		email: 'energia@kappa.mx',
-		phone: '555-2012',
-		address: 'Col. Industrial Norte',
-		city: 'Hermosillo',
-		state: 'SON',
-		zip: '83000',
-		country: 'MX',
-		tenantId: 't1',
-		creditLimit: 300000,
-	},
-]
 
 const MOCK_SALES: Sale[] = [
 	{
@@ -280,22 +109,38 @@ const MONTHLY_DATA = [
 
 @Component({
 	selector: 'app-customer-detail-page',
-	imports: [Avatar, Badge, Card, CardHeader, Icon, Link, PageTitle, MainContainer, Chart, DataTable, StatCard, CurrencyPipe, NgClass, CommonModule],
+	imports: [
+		Avatar,
+		Badge,
+		Card,
+		CardHeader,
+		Icon,
+		Link,
+		PageTitle,
+		MainContainer,
+		Chart,
+		DataTable,
+		StatCard,
+		CurrencyPipe,
+		NgClass,
+		CommonModule,
+	],
 	templateUrl: './customer-detail-page.html',
+	providers: [GetCustomerByIdUseCase, CustomerProvider],
 })
 export class CustomerDetailPage {
 	private readonly route = inject(ActivatedRoute)
 	private readonly router = inject(Router)
+	private readonly getCustomerByIdUseCase = inject(GetCustomerByIdUseCase)
 
 	private readonly customerId = toSignal(this.route.params.pipe(map(p => p['id'] as string | undefined)))
 
-	protected customer = computed<Customer | null>(() => {
-		const id = this.customerId()
-		if (!id) return null
-		return MOCK_CUSTOMERS.find(c => c.id === id) ?? null
-	})
-
 	private readonly statusCellTpl = viewChild.required<TemplateRef<{ $implicit: Sale }>>('statusCell')
+
+	customerRes = resource({
+		loader: () => this.getCustomerByIdUseCase.execute(this.customerId()!),
+	})
+	customer = computed(() => this.customerRes.value())
 
 	protected readonly sales = MOCK_SALES
 	protected salesColumns = signal<TableColumn[]>([])
@@ -363,7 +208,20 @@ export class CustomerDetailPage {
 					hideBelow: 'lg',
 					render: (s: Sale) => {
 						const [y, m, d] = s.date.split('-').map(Number)
-						const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+						const months = [
+							'Ene',
+							'Feb',
+							'Mar',
+							'Abr',
+							'May',
+							'Jun',
+							'Jul',
+							'Ago',
+							'Sep',
+							'Oct',
+							'Nov',
+							'Dic',
+						]
 						return `${String(d).padStart(2, '0')} ${months[m - 1]} ${y}`
 					},
 				},
