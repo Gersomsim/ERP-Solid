@@ -73,3 +73,8 @@ export type IconType =
 	| 'clock'
 	| 'hourglass'
 	| 'percent'
+	| 'trending-up'
+	| 'user-x'
+	| 'wallet'
+	| 'coins'
+	| 'receipt'

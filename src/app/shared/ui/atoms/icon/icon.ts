@@ -25,6 +25,7 @@ import {
 	LucideCloud,
 	LucideCloudDownload,
 	LucideCloudRain,
+	LucideCoins,
 	LucideCreditCard,
 	LucideDownload,
 	LucideDynamicIcon,
@@ -52,6 +53,7 @@ import {
 	LucideMoon,
 	LucidePercent,
 	LucidePlus,
+	LucideReceipt,
 	LucideSearch,
 	LucideSend,
 	LucideSettings,
@@ -68,12 +70,15 @@ import {
 	LucideThumbsDown,
 	LucideThumbsUp,
 	LucideTrash2,
+	LucideTrendingUp,
 	LucideTriangleAlert,
 	LucideUser,
 	LucideUserMinus,
 	LucideUserPen,
 	LucideUserPlus,
+	LucideUserX,
 	LucideUsers,
+	LucideWallet,
 	LucideX,
 	LucideZap,
 } from '@lucide/angular'
@@ -165,6 +170,11 @@ export class Icon {
 			clock: LucideClock,
 			hourglass: LucideHourglass,
 			percent: LucidePercent,
+			'trending-up': LucideTrendingUp,
+			'user-x': LucideUserX,
+			wallet: LucideWallet,
+			coins: LucideCoins,
+			receipt: LucideReceipt,
 		}
 
 		return dic[this.icon()]
