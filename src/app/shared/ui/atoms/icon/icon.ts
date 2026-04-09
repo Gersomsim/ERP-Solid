@@ -50,6 +50,7 @@ import {
 	LucideMapPin,
 	LucideMenu,
 	LucideMoon,
+	LucidePercent,
 	LucidePlus,
 	LucideSearch,
 	LucideSend,
@@ -163,6 +164,7 @@ export class Icon {
 			folder: LucideFolder,
 			clock: LucideClock,
 			hourglass: LucideHourglass,
+			percent: LucidePercent,
 		}
 
 		return dic[this.icon()]

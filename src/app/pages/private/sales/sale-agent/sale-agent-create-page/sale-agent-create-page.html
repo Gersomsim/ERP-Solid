@@ -1,1 +1,31 @@
-<p>sale-agent-create-page works!</p>
+<lib-ui-main-container>
+	<div class="space-y-6">
+		<!-- ── Encabezado ───────────────────────────────────────────── -->
+		<div class="flex items-center gap-3">
+			<lib-ui-link
+				link="../list"
+				variant="ghost"
+				size="sm"
+			>
+				<lib-ui-icon
+					icon="arrow-left"
+					[size]="15"
+				/>
+			</lib-ui-link>
+
+			<lib-ui-page-title>
+				Nuevo agente de venta
+				<span subtitle>Completa los datos para registrar un agente.</span>
+			</lib-ui-page-title>
+		</div>
+
+		<!-- ── Formulario ───────────────────────────────────────────── -->
+		<lib-ui-card padding="lg">
+			<app-sale-agent-form
+				[loading]="loading()"
+				(Submit)="onSubmit($event)"
+				(cancel)="onCancel()"
+			/>
+		</lib-ui-card>
+	</div>
+</lib-ui-main-container>

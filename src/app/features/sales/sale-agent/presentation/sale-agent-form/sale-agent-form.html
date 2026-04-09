@@ -1,0 +1,78 @@
+<form
+	novalidate
+	[formGroup]="form"
+	(ngSubmit)="onSubmit()"
+	class="flex flex-col gap-8"
+>
+	<!-- ── Sección: Información del agente ──────────────────────── -->
+	<section class="flex flex-col gap-5">
+		<div>
+			<h2 class="text-sm font-semibold text-surface-900 dark:text-surface-100">Información del agente</h2>
+			<p class="mt-0.5 text-xs text-surface-400 dark:text-surface-500">
+				Datos de identificación del agente de venta.
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+			<!-- Nombre (ancho completo) -->
+			<div>
+				<lib-ui-input
+					label="Nombre del agente"
+					placeholder="Ej. Juan Pérez"
+					prefixIcon="user"
+					formControlName="name"
+				/>
+			</div>
+
+			<!-- Tasa de comisión -->
+			<lib-ui-input
+				label="Tasa de comisión (%)"
+				type="number"
+				placeholder="0"
+				prefixIcon="percent"
+				hint="Porcentaje de comisión sobre ventas (0–100)"
+				formControlName="commissionRate"
+			/>
+		</div>
+	</section>
+
+	<div class="border-t border-surface-100 dark:border-surface-800"></div>
+
+	<!-- ── Sección: Vinculación de usuario ──────────────────────── -->
+	<section class="flex flex-col gap-5">
+		<div>
+			<h2 class="text-sm font-semibold text-surface-900 dark:text-surface-100">Vinculación de usuario</h2>
+			<p class="mt-0.5 text-xs text-surface-400 dark:text-surface-500">
+				Asocia el agente a un usuario del sistema (opcional).
+			</p>
+		</div>
+
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+			<lib-ui-input
+				label="ID de usuario"
+				placeholder="uuid del usuario"
+				prefixIcon="link"
+				hint="Deja vacío si el agente no tiene cuenta en el sistema"
+				formControlName="userId"
+			/>
+		</div>
+	</section>
+
+	<!-- ── Acciones ──────────────────────────────────────────────── -->
+	<div class="flex items-center justify-end gap-3 pt-2">
+		<lib-ui-button
+			type="button"
+			variant="secondary"
+			(click)="cancel.emit()"
+		>
+			Cancelar
+		</lib-ui-button>
+
+		<lib-ui-button
+			type="submit"
+			[loading]="loading()"
+		>
+			Guardar agente
+		</lib-ui-button>
+	</div>
+</form>

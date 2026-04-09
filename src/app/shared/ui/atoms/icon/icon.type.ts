@@ -72,3 +72,4 @@ export type IconType =
 	| 'folder'
 	| 'clock'
 	| 'hourglass'
+	| 'percent'
