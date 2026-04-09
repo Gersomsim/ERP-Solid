@@ -24,8 +24,9 @@ export class SaleAgentListPage {
 	agentsRes = resource({
 		loader: () => this.getSaleAgentsUseCase.execute(),
 	})
+	pagination = computed(() => this.agentsRes.value()?.pagination ?? null)
 
-	totalItems = computed(() => this.agentsRes.value()?.length ?? 0)
+	totalItems = computed(() => this.pagination()?.totalItems ?? 0)
 
 	protected onView(agent: SaleAgent): void {
 		this.router.navigate(['../detail', agent.id], { relativeTo: this.route })

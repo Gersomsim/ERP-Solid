@@ -11,8 +11,14 @@
 				</span>
 			</lib-ui-page-title>
 
-			<lib-ui-link link="../new" type="link">
-				<lib-ui-icon icon="plus" [size]="16" />
+			<lib-ui-link
+				link="../new"
+				type="link"
+			>
+				<lib-ui-icon
+					icon="plus"
+					[size]="16"
+				/>
 				Nuevo agente
 			</lib-ui-link>
 		</div>
@@ -26,7 +32,7 @@
 			</lib-ui-card-header>
 
 			<app-sale-agent-table
-				[agents]="agentsRes.value() ?? []"
+				[agents]="agentsRes.value()?.data ?? []"
 				[loading]="agentsRes.isLoading()"
 				(view)="onView($event)"
 				(edit)="onEdit($event)"
