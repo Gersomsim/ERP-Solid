@@ -1,1 +1,44 @@
-<p>sale-agent-edit-page works!</p>
+<lib-ui-main-container>
+	<div class="space-y-6">
+		<!-- ── Encabezado ───────────────────────────────────────────── -->
+		<div class="flex items-center gap-3">
+			<lib-ui-link
+				link="../../list"
+				variant="ghost"
+				size="sm"
+			>
+				<lib-ui-icon
+					icon="arrow-left"
+					[size]="15"
+				/>
+			</lib-ui-link>
+
+			<lib-ui-page-title>
+				Editar agente de venta
+				@if (agent()) {
+					<span subtitle>{{ agent()!.name }}</span>
+				}
+			</lib-ui-page-title>
+		</div>
+
+		<!-- ── Formulario ───────────────────────────────────────────── -->
+		<lib-ui-card padding="lg">
+			@if (agent()) {
+				<app-sale-agent-form
+					[initialValue]="initialValue()"
+					[loading]="loading()"
+					(Submit)="onSubmit($event)"
+					(cancel)="onCancel()"
+				/>
+			} @else {
+				<div class="flex flex-col items-center gap-2 py-12 text-surface-400 dark:text-surface-500">
+					<lib-ui-icon
+						icon="user-x"
+						[size]="36"
+					/>
+					<p class="text-sm font-medium">Agente no encontrado</p>
+				</div>
+			}
+		</lib-ui-card>
+	</div>
+</lib-ui-main-container>

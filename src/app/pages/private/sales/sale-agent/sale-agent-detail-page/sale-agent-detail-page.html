@@ -1,11 +1,10 @@
 <lib-ui-main-container>
 	<div class="space-y-6">
-
 		<!-- ── Header ─────────────────────────────────────────────────────── -->
 		<div class="flex items-center justify-between gap-4">
 			<div class="flex items-center gap-3">
 				<lib-ui-link
-					link="../list"
+					link="../../list"
 					variant="ghost"
 					size="sm"
 				>
@@ -23,7 +22,7 @@
 					<lib-ui-page-title>Agente de venta</lib-ui-page-title>
 				}
 			</div>
-			<lib-ui-link link="../edit/{{ agentId() }}">
+			<lib-ui-link link="../../edit/{{ agentId() }}">
 				<lib-ui-icon
 					icon="user-pen"
 					[size]="15"
@@ -33,7 +32,6 @@
 		</div>
 
 		@if (agent(); as a) {
-
 			<!-- ── Tarjeta de información del agente ──────────────────────── -->
 			<lib-ui-card padding="lg">
 				<div
@@ -63,7 +61,9 @@
 									{{ a.commissionRate }}% de comisión sobre ventas
 								</span>
 								@if (a.userId) {
-									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+									<span
+										class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400"
+									>
 										<lib-ui-icon
 											icon="link"
 											[size]="12"
@@ -86,9 +86,7 @@
 							>
 								Comisiones pagadas
 							</p>
-							<p
-								class="mt-1 text-2xl font-bold text-success-600 dark:text-success-400 tabular-nums"
-							>
+							<p class="mt-1 text-2xl font-bold text-success-600 dark:text-success-400 tabular-nums">
 								{{ totalCommissionsFormatted() }}
 							</p>
 						</div>
@@ -149,7 +147,6 @@
 
 			<!-- ── Comisiones + Gráficas ──────────────────────────────────── -->
 			<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
 				<!-- Tabla de comisiones (2/3) -->
 				<lib-ui-card
 					class="lg:col-span-2"
@@ -176,13 +173,10 @@
 
 				<!-- Columna derecha: gráficas + resumen (1/3) -->
 				<div class="space-y-4">
-
 					<!-- Gráfica de ventas mensuales -->
 					<lib-ui-card>
 						<div class="flex items-center justify-between">
-							<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
-								Ventas 2024
-							</h3>
+							<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">Ventas 2024</h3>
 							<lib-ui-icon
 								icon="chart-area"
 								[size]="14"
@@ -239,9 +233,7 @@
 									<span class="w-2 h-2 rounded-full bg-success-500 shrink-0"></span>
 									<span class="text-xs text-surface-600 dark:text-surface-400">Pagadas</span>
 								</div>
-								<span
-									class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100"
-								>
+								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
 									{{ commissionCountByStatus.paid }}
 								</span>
 							</div>
@@ -250,9 +242,7 @@
 									<span class="w-2 h-2 rounded-full bg-primary-500 shrink-0"></span>
 									<span class="text-xs text-surface-600 dark:text-surface-400">Aprobadas</span>
 								</div>
-								<span
-									class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100"
-								>
+								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
 									{{ commissionCountByStatus.approved }}
 								</span>
 							</div>
@@ -261,9 +251,7 @@
 									<span class="w-2 h-2 rounded-full bg-amber-500 shrink-0"></span>
 									<span class="text-xs text-surface-600 dark:text-surface-400">Pendientes</span>
 								</div>
-								<span
-									class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100"
-								>
+								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
 									{{ commissionCountByStatus.pending }}
 								</span>
 							</div>
@@ -274,9 +262,7 @@
 									></span>
 									<span class="text-xs text-surface-600 dark:text-surface-400">Canceladas</span>
 								</div>
-								<span
-									class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100"
-								>
+								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
 									{{ commissionCountByStatus.cancelled }}
 								</span>
 							</div>
@@ -291,9 +277,7 @@
 					<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
 						Historial de liquidaciones
 					</h3>
-					<span class="text-xs text-surface-500 dark:text-surface-400">
-						Pagos de comisiones por período
-					</span>
+					<span class="text-xs text-surface-500 dark:text-surface-400">Pagos de comisiones por período</span>
 				</lib-ui-card-header>
 
 				<lib-ui-data-table
@@ -305,7 +289,6 @@
 					emptyHint="Las comisiones aprobadas se agrupan en liquidaciones periódicas"
 				/>
 			</lib-ui-card>
-
 		} @else {
 			<!-- Estado vacío / no encontrado -->
 			<div class="flex flex-col items-center gap-3 py-24 text-surface-400 dark:text-surface-500">
@@ -323,7 +306,6 @@
 				</lib-ui-link>
 			</div>
 		}
-
 	</div>
 
 	<!-- ── Templates de celdas ──────────────────────────────────────────── -->

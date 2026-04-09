@@ -1,14 +1,4 @@
-import { CurrencyPipe } from '@angular/common'
-import {
-	Component,
-	TemplateRef,
-	afterNextRender,
-	computed,
-	inject,
-	resource,
-	signal,
-	viewChild,
-} from '@angular/core'
+import { Component, TemplateRef, afterNextRender, computed, inject, resource, signal, viewChild } from '@angular/core'
 import { toSignal } from '@angular/core/rxjs-interop'
 import { ActivatedRoute, Router } from '@angular/router'
 
@@ -239,7 +229,7 @@ const MONTHLY_COMMISSION_DATA = [
 
 @Component({
 	selector: 'app-sale-agent-detail-page',
-	imports: [Avatar, Badge, Card, CardHeader, Icon, Link, PageTitle, MainContainer, Chart, DataTable, StatCard, CurrencyPipe],
+	imports: [Avatar, Badge, Card, CardHeader, Icon, Link, PageTitle, MainContainer, Chart, DataTable, StatCard],
 	templateUrl: './sale-agent-detail-page.html',
 	providers: [GetSaleAgentByIdUseCase, SaleAgentProvider],
 })
@@ -254,8 +244,7 @@ export class SaleAgentDetailPage {
 		viewChild.required<TemplateRef<{ $implicit: MockCommission }>>('commissionStatusCell')
 	private readonly paymentStatusCellTpl =
 		viewChild.required<TemplateRef<{ $implicit: MockCommissionPayment }>>('paymentStatusCell')
-	private readonly saleStatusCellTpl =
-		viewChild.required<TemplateRef<{ $implicit: MockSale }>>('saleStatusCell')
+	private readonly saleStatusCellTpl = viewChild.required<TemplateRef<{ $implicit: MockSale }>>('saleStatusCell')
 
 	agentRes = resource({
 		loader: () => this.getSaleAgentByIdUseCase.execute(this.agentId()!),
@@ -303,12 +292,8 @@ export class SaleAgentDetailPage {
 	}
 
 	protected totalSalesFormatted = computed(() => SaleAgentDetailPage.formatMXN(this.totalSalesAmount()))
-	protected totalCommissionsFormatted = computed(() =>
-		SaleAgentDetailPage.formatMXN(this.totalCommissionsEarned()),
-	)
-	protected pendingCommissionsFormatted = computed(() =>
-		SaleAgentDetailPage.formatMXN(this.pendingCommissions()),
-	)
+	protected totalCommissionsFormatted = computed(() => SaleAgentDetailPage.formatMXN(this.totalCommissionsEarned()))
+	protected pendingCommissionsFormatted = computed(() => SaleAgentDetailPage.formatMXN(this.pendingCommissions()))
 
 	// Gráficas
 	protected readonly monthlySalesChartData: ChartData = {
@@ -332,7 +317,20 @@ export class SaleAgentDetailPage {
 					hideBelow: 'lg',
 					render: (s: MockSale) => {
 						const [y, m, d] = s.date.split('-').map(Number)
-						const months = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+						const months = [
+							'Ene',
+							'Feb',
+							'Mar',
+							'Abr',
+							'May',
+							'Jun',
+							'Jul',
+							'Ago',
+							'Sep',
+							'Oct',
+							'Nov',
+							'Dic',
+						]
 						return `${String(d).padStart(2, '0')} ${months[m - 1]} ${y}`
 					},
 				},
