@@ -5,10 +5,10 @@ export interface ApiResponseDto<T> {
 	message: string
 	data: T
 	meta: Meta
-	pagination?: Pagination
 }
 
 export interface Meta {
+	pagination?: Pagination
 	method: string
 	path: string
 	requestId: string

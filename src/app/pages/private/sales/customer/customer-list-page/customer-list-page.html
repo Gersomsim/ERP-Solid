@@ -1,12 +1,13 @@
 <lib-ui-main-container>
 	<div class="space-y-5">
-
 		<!-- ── Encabezado de página ───────────────────────────────────── -->
 		<div class="flex items-start justify-between gap-4">
 			<lib-ui-page-title>
 				Clientes
 				<span subtitle>
-					{{ total() }} cliente{{ total() !== 1 ? 's' : '' }} registrado{{ total() !== 1 ? 's' : '' }}
+					{{ totalItems() }} cliente{{ totalItems() !== 1 ? 's' : '' }} registrado{{
+						totalItems() !== 1 ? 's' : ''
+					}}
 				</span>
 			</lib-ui-page-title>
 
@@ -29,25 +30,24 @@
 					<lib-ui-search-input placeholder="Buscar por nombre, RFC o ciudad..." />
 				</div>
 				<span class="text-xs text-surface-500 dark:text-surface-400">
-					{{ total() }} resultado{{ total() !== 1 ? 's' : '' }}
+					{{ totalItems() }} resultado{{ totalItems() !== 1 ? 's' : '' }}
 				</span>
 			</lib-ui-card-header>
 
 			<app-customer-table
-				[customers]="pagedCustomers()"
-				[loading]="false"
+				[customers]="customerRes.value()?.data ?? []"
+				[loading]="customerRes.isLoading()"
 				(view)="onView($event)"
 				(edit)="onEdit($event)"
 			/>
 		</lib-ui-card>
 
 		<!-- ── Paginación ─────────────────────────────────────────────── -->
-		@if (total() > 0) {
+		@if (paginate(); as pagination) {
 			<lib-ui-paginator
-				[total]="total()"
-				[pageSize]="pageSize"
-				[page]="page()"
-				(pageChange)="onPageChange($event)"
+				[total]="pagination.totalItems"
+				[pageSize]="pagination.itemsPerPage"
+				[page]="pagination.currentPage"
 			/>
 		}
 	</div>

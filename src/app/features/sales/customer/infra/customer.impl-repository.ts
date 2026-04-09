@@ -14,11 +14,11 @@ export class CustomerImplRepository implements CustomerRepository {
 	private readonly http = inject(HttpService)
 
 	getAll(): Promise<PaginateDto<Customer>> {
-		const response = this.http.get<Customer[]>(this.path).pipe(
+		const response = this.http.get<Customer[]>(this.path, { withCredentials: true }).pipe(
 			map(response => {
 				return {
 					data: response.data,
-					pagination: response.pagination!,
+					pagination: response.meta.pagination!,
 				}
 			}),
 		)

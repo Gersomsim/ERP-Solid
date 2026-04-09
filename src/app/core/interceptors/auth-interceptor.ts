@@ -1,11 +1,13 @@
 import { HttpErrorResponse, HttpInterceptorFn, HttpRequest } from '@angular/common/http'
 import { inject } from '@angular/core'
 import { Router } from '@angular/router'
+
 import { from, switchMap, throwError } from 'rxjs'
 import { catchError } from 'rxjs/operators'
 
 import { AuthState } from '@core/auth'
 import { HTTP_SKIP_AUTH } from '@core/http/http.context'
+
 import { AuthToken } from '@features/users/auth/infra'
 
 // Compartido entre todas las invocaciones para evitar llamadas paralelas al
