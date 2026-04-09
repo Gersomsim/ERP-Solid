@@ -1,6 +1,5 @@
 <lib-ui-main-container>
 	<div class="space-y-6">
-
 		<!-- ── Header ─────────────────────────────────────────────────────── -->
 		<div class="flex items-center justify-between gap-4">
 			<div class="flex items-center gap-3">
@@ -24,20 +23,16 @@
 				}
 			</div>
 
-			<button
-				(click)="onEdit()"
-				class="inline-flex items-center gap-2 rounded-lg border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800 px-4 py-2 text-sm font-medium text-surface-700 dark:text-surface-300 shadow-sm hover:bg-surface-50 dark:hover:bg-surface-700 transition-colors"
-			>
+			<lib-ui-link link="../../edit/{{ customerId() }}">
 				<lib-ui-icon
 					icon="user-pen"
 					[size]="15"
 				/>
 				Editar cliente
-			</button>
+			</lib-ui-link>
 		</div>
 
 		@if (customer(); as c) {
-
 			<!-- ── Tarjeta de información ──────────────────────────────────── -->
 			<!-- Escenario: acento superior + cuerpo con padding lg -->
 			<lib-ui-card padding="lg">
@@ -47,7 +42,6 @@
 				></div>
 
 				<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
 					<!-- Avatar + nombre + contacto -->
 					<div class="flex items-start gap-5 md:col-span-2">
 						<lib-ui-avatar
@@ -65,7 +59,9 @@
 
 							<div class="flex flex-wrap gap-x-5 gap-y-1.5 mt-3">
 								@if (c.email) {
-									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+									<span
+										class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400"
+									>
 										<lib-ui-icon
 											icon="mail"
 											[size]="12"
@@ -75,7 +71,9 @@
 									</span>
 								}
 								@if (c.phone) {
-									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+									<span
+										class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400"
+									>
 										<lib-ui-icon
 											icon="info"
 											[size]="12"
@@ -85,7 +83,9 @@
 									</span>
 								}
 								@if (c.city) {
-									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+									<span
+										class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400"
+									>
 										<lib-ui-icon
 											icon="map-pin"
 											[size]="12"
@@ -95,7 +95,9 @@
 									</span>
 								}
 								@if (c.address) {
-									<span class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400">
+									<span
+										class="flex items-center gap-1.5 text-xs text-surface-600 dark:text-surface-400"
+									>
 										<lib-ui-icon
 											icon="building"
 											[size]="12"
@@ -113,7 +115,9 @@
 						class="border-t md:border-t-0 md:border-l border-surface-100 dark:border-surface-700/50 pt-5 md:pt-0 md:pl-6 flex flex-col gap-4"
 					>
 						<div>
-							<p class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wide">
+							<p
+								class="text-xs font-medium text-surface-500 dark:text-surface-400 uppercase tracking-wide"
+							>
 								Línea de crédito
 							</p>
 							<p class="mt-1 text-2xl font-bold text-surface-900 dark:text-surface-50 tabular-nums">
@@ -139,7 +143,9 @@
 								></div>
 							</div>
 
-							<div class="flex items-center justify-between text-xs text-surface-500 dark:text-surface-500">
+							<div
+								class="flex items-center justify-between text-xs text-surface-500 dark:text-surface-500"
+							>
 								<span>
 									{{ pendingAmount() | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }} pendiente
 								</span>
@@ -186,7 +192,6 @@
 
 			<!-- ── Tabla + gráfica ─────────────────────────────────────────── -->
 			<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-
 				<!-- Historial de ventas (2/3) -->
 				<!-- Escenario: header con border-b + contenido edge-to-edge -->
 				<lib-ui-card
@@ -197,9 +202,7 @@
 						<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
 							Historial de ventas
 						</h3>
-						<span class="text-xs text-surface-500 dark:text-surface-400">
-							{{ sales.length }} registros
-						</span>
+						<span class="text-xs text-surface-500 dark:text-surface-400">{{ sales.length }} registros</span>
 					</lib-ui-card-header>
 
 					<lib-ui-data-table
@@ -213,14 +216,11 @@
 
 				<!-- Columna derecha (1/3) -->
 				<div class="space-y-4">
-
 					<!-- Gráfica de ingresos -->
 					<!-- Escenario: solo cuerpo con padding, título integrado sin separador -->
 					<lib-ui-card>
 						<div class="flex items-center justify-between">
-							<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">
-								Ingresos 2024
-							</h3>
+							<h3 class="text-sm font-semibold text-surface-900 dark:text-surface-100">Ingresos 2024</h3>
 							<lib-ui-icon
 								icon="chart-area"
 								[size]="14"
@@ -281,7 +281,9 @@
 
 							<div class="px-5 py-3 flex items-center justify-between">
 								<div class="flex items-center gap-2.5">
-									<span class="w-2 h-2 rounded-full bg-surface-300 dark:bg-surface-600 shrink-0"></span>
+									<span
+										class="w-2 h-2 rounded-full bg-surface-300 dark:bg-surface-600 shrink-0"
+									></span>
 									<span class="text-xs text-surface-600 dark:text-surface-400">Canceladas</span>
 								</div>
 								<span class="text-xs font-semibold tabular-nums text-surface-900 dark:text-surface-100">
@@ -292,9 +294,7 @@
 					</lib-ui-card>
 				</div>
 			</div>
-
 		} @else {
-
 			<!-- Estado vacío / no encontrado -->
 			<div class="flex flex-col items-center gap-3 py-24 text-surface-400 dark:text-surface-500">
 				<lib-ui-icon
@@ -310,7 +310,6 @@
 					Volver al listado
 				</lib-ui-link>
 			</div>
-
 		}
 	</div>
 

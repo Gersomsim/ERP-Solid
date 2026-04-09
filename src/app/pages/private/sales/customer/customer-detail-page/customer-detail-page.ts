@@ -133,7 +133,7 @@ export class CustomerDetailPage {
 	private readonly router = inject(Router)
 	private readonly getCustomerByIdUseCase = inject(GetCustomerByIdUseCase)
 
-	private readonly customerId = toSignal(this.route.params.pipe(map(p => p['id'] as string | undefined)))
+	readonly customerId = toSignal(this.route.params.pipe(map(p => p['id'] as string | undefined)))
 
 	private readonly statusCellTpl = viewChild.required<TemplateRef<{ $implicit: Sale }>>('statusCell')
 
